@@ -1,2 +1,1 @@
-# tankrichmfd-site
-MFD site of Tankrich
+# Tankrich MFD Site
