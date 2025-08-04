@@ -1,1 +1,165 @@
-/* truncated */
+:root {
+  --primary-color: #0052CC;
+  --accent-color: #FFC400;
+  --light-color: #F5F7FA;
+  --text-color: #212121;
+  --max-width: 960px;
+  font-family: "Inter", "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+/* ----- Global ----- */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  color: var(--text-color);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--light-color);
+}
+
+/* ----- Header / Nav ----- */
+header {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+.nav-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  text-decoration: none;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+nav a:hover { text-decoration: underline; }
+
+/* ----- Hero ----- */
+.hero {
+  min-height: 60vh;
+  background: url('assets/images/hero.jpg') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  padding: 2rem 1rem;
+}
+
+.hero-text h1 { font-size: 2rem; margin: 0 0 0.5rem; }
+.hero-text p  { font-size: 1.125rem; margin: 0; }
+
+/* ----- Sections ----- */
+.content-section {
+  padding: 2rem 1rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.content-section h2 {
+  color: var(--primary-color);
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.content-section ul, .content-section ol { padding-left: 1.25rem; }
+.content-section li { margin-bottom: 0.5rem; }
+
+/* ----- CTA banner ----- */
+.cta-banner {
+  background-color: var(--primary-color);
+  color: #fff;
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.cta-banner h2 { margin: 0 0 1rem; font-size: 1.75rem; }
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.25rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s ease;
+}
+
+.button.primary {
+  background: var(--accent-color);
+  color: var(--text-color);
+}
+
+.button.primary:hover { background: #e6b800; }
+
+.button.secondary {
+  background: transparent;
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+}
+
+.button.secondary:hover {
+  background: rgba(255, 196, 0, 0.15);
+}
+
+/* ----- Footer ----- */
+footer {
+  background: var(--primary-color);
+  color: #fff;
+  padding: 1rem;
+}
+
+.footer-content {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* ----- Typography tweaks for wider screens ----- */
+@media (min-width: 600px) {
+  .hero-text h1 { font-size: 2.5rem; }
+  .hero-text p  { font-size: 1.25rem; }
+}
+
+@media (min-width: 900px) {
+  .hero-text h1 { font-size: 3rem; }
+}
+
+/* ----- Extras for the Info page ----- */
+.subtitle      { font-size: 1.25rem; margin-bottom: 0.75rem; color: var(--primary-color); }
+.numbered-list { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1rem; }
+.numbered-list li { margin-bottom: 0.5rem; }
+.highlight     { background: #fff3cd; padding: 0 0.3rem; border-radius: 0.2rem; }
