@@ -1,134 +1,673 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tankrich MFD – Smart Investing</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tankrich MFD – Mutual Funds Distributor</title>
+    <style>
+        /* Base reset */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f6fa;
+        }
+
+        /* Container helper */
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .logo img {
+            width: 36px;
+            height: 36px;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        nav a:hover {
+            color: #667eea;
+        }
+        nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -4px;
+            height: 2px;
+            width: 0;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            color: white;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/images/hero-bg.png');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.5);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 1rem;
+            animation: fadeInUp 1s ease forwards;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .cta-btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
+            transition: all 0.3s ease;
+        }
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(102,126,234,0.6);
+        }
+
+        /* Section styles */
+        section.section {
+            padding: 80px 0;
+            background: #ffffff;
+        }
+        section.section:nth-of-type(even) {
+            background: #f8f9fa;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .section-title p {
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        /* About section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 40px;
+        }
+        .team-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+        }
+        .team-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+        .team-card h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+        }
+        .team-card p {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Features (Why Mutual Funds) section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 40px;
+        }
+        .feature {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        .feature .icon {
+            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+        }
+        .feature h3 {
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-size: 1.2rem;
+        }
+        .feature p {
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        /* Edge section */
+        .edge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 40px;
+        }
+        .edge-card {
+            padding: 1.5rem;
+            border-radius: 15px;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: transform 0.3s ease;
+        }
+        .edge-card:hover {
+            transform: translateY(-5px);
+        }
+        .edge-card h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        .edge-card p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Returns section */
+        .returns-table {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            margin-top: 40px;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        }
+        .returns-table th, .returns-table td {
+            padding: 1rem;
+            text-align: left;
+        }
+        .returns-table th {
+            background: #f0f1f7;
+            color: #333;
+            font-weight: 600;
+        }
+        .returns-table tr:nth-child(even) td {
+            background: #f9f9fb;
+        }
+        .returns-note {
+            max-width: 800px;
+            margin: 1rem auto 0;
+            font-size: 0.85rem;
+            color: #777;
+            text-align: center;
+        }
+
+        /* Goal-driven section */
+        .goals-list {
+            max-width: 800px;
+            margin: 0 auto;
+            margin-top: 30px;
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .goals-list li {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .goals-list li span.icon {
+            font-size: 1.3rem;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+        .goals-list li p {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        /* CTA section */
+        .cta-section {
+            padding: 60px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        .cta-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .cta-section p {
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        footer .footer-links {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        footer .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        footer .footer-links a:hover {
+            color: #667eea;
+        }
+        footer p {
+            font-size: 0.8rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+            nav ul {
+                display: none;
+            }
+            .cta-group {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="navbar-container">
-      <div class="logo"><a href="index.html">Tankrich MFD</a></div>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="info.html">Info</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+    <header>
+        <div class="container header-inner">
+            <div class="logo">
+                <img src="assets/images/logo.png" alt="Tankrich Logo">
+                <span>Tankrich MFD</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#why">Why MFs</a></li>
+                    <li><a href="#edge">Our Edge</a></li>
+                    <li><a href="info.html">Info</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-  <!-- Hero section -->
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Your Gateway to Smart Investing</h1>
-      <p>We are builders and love markets – creating tools and insights to empower your financial journey.</p>
-      <div class="btn-group">
-        <a href="https://tidycal.com/tankrich/30-minute-meeting" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Book Discovery Call</a>
-        <a href="https://www.assetplus.in/mfd/ARN-331582" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Sign Up on AssetPlus</a>
-      </div>
-    </div>
-  </section>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Invest with Confidence</h1>
+            <p>We are builders who love markets. Your trusted partner in mutual fund investing for over 15 years.</p>
+            <div class="cta-group">
+                <a href="https://tidycal.com/tankrich/30-minute-meeting" target="_blank" rel="noopener" class="cta-btn">Book a Discovery Call</a>
+                <a href="info.html" class="cta-btn">Learn About Onboarding</a>
+            </div>
+        </div>
+    </section>
 
-  <!-- About section -->
-  <section id="about">
-    <h2 class="section-title">About Us</h2>
-    <p>At Tankrich MFD, we combine years of investing experience with a builder’s mindset. Our founders bring deep expertise across equity and debt markets, using technology and research to craft intelligent investment solutions.</p>
-    <div class="cards">
-      <div class="card">
-        <h3>Vivek Bothra</h3>
-        <p>15+ years equity-investing experience; Top-50 small-cap investor (India Business Magazine); 10K+ active readers; MBA (Gold Medalist) and CFA (US Level 2); Chief Investment Strategist.</p>
-      </div>
-      <div class="card">
-        <h3>Vineet Bothra</h3>
-        <p>Credit/Debt specialist with a decade at a top 10 Indian bank; originated ₹50 Cr+ AUM in credit; Chartered Accountant; Chief of Operations.</p>
-      </div>
-    </div>
-  </section>
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Meet Our Founders</h2>
+                <p>Led by experienced professionals with deep market knowledge and proven track records.</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card">
+                    <h3>Vivek Bothra</h3>
+                    <p><strong>Chief Investment Strategist</strong><br><br>
+                    • 15+ years equity‑investing experience<br>
+                    • Top‑50 small‑cap investor (India Business Magazine)<br>
+                    • 10K+ newsletter readers<br>
+                    • MBA (Gold Medalist) & CFA (US L2)<br>
+                    • Published investment researcher and strategist</p>
+                </div>
+                <div class="team-card">
+                    <h3>Vineet Bothra</h3>
+                    <p><strong>Chief of Operations</strong><br><br>
+                    • Credit/Debt specialist<br>
+                    • 10 years at a top‑10 Indian bank<br>
+                    • ₹50 Cr+ AUM originated<br>
+                    • Chartered Accountant<br>
+                    • Operations and risk management expert</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Why Mutual Funds section -->
-  <section id="why">
-    <h2 class="section-title">Why Mutual Funds?</h2>
-    <p>Mutual funds provide a professionally managed, diversified way to grow your wealth.</p>
-    <ul class="list">
-      <li>Tax‑efficient structure and potential tax benefits through schemes such as ELSS.</li>
-      <li>Balance of time and return – options from short‑term liquidity to long‑term growth.</li>
-      <li>High liquidity – buy or sell on any business day at the fund’s Net Asset Value (NAV).</li>
-      <li>Regulated framework – SEBI regulations ensure transparency and investor protection.</li>
-      <li>Wide choice of schemes – our role is to help you navigate and select the right ones.</li>
-    </ul>
-  </section>
+    <!-- Why Mutual Funds Section -->
+    <section id="why" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Mutual Funds?</h2>
+                <p>The smart way to build wealth through professional management and diversification.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="icon">💰</div>
+                    <h3>Tax‑Efficient Structure</h3>
+                    <p>Optimised tax treatment helps you keep more of your returns.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">⚖️</div>
+                    <h3>Balanced Approach</h3>
+                    <p>Strike the right balance between time and return for optimal growth.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">💧</div>
+                    <h3>High Liquidity</h3>
+                    <p>Access your investments whenever you need them.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">🛡️</div>
+                    <h3>Regulation & Transparency</h3>
+                    <p>SEBI‑regulated funds offer transparency and investor protection.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">🎯</div>
+                    <h3>Wide Choice of Schemes</h3>
+                    <p>Choose from a wide array of schemes suited to your goals.</p>
+                </div>
+                <div class="feature">
+                    <div class="icon">🧭</div>
+                    <h3>Expert Guidance</h3>
+                    <p>Navigate the investment landscape with seasoned professionals.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Our Edge section -->
-  <section id="edge">
-    <h2 class="section-title">Our Edge</h2>
-    <ul class="list">
-      <li>Macro‑ & micro‑trend detection and reversal system.</li>
-      <li>Deep knowledge across stocks, commodities and bonds.</li>
-      <li>Data‑driven scheme selection based on quantitative research.</li>
-      <li>All‑digital partner ecosystem – everything on app.</li>
-      <li>“Tankrich Nudges” to keep you on track toward your goals.</li>
-      <li>Annual and situational portfolio reviews to stay aligned with your objectives.</li>
-    </ul>
-  </section>
+    <!-- Our Edge Section -->
+    <section id="edge" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Edge</h2>
+                <p>What sets us apart in the mutual fund landscape.</p>
+            </div>
+            <div class="edge-grid">
+                <div class="edge-card">
+                    <h4>🔍 Macro & Micro Trend Detection</h4>
+                    <p>We spot emerging trends and reversals to time your investments better.</p>
+                </div>
+                <div class="edge-card">
+                    <h4>🎓 Deep Market Knowledge</h4>
+                    <p>Decades of combined experience across stocks, commodities and bonds.</p>
+                </div>
+                <div class="edge-card">
+                    <h4>📈 Data‑Driven Selection</h4>
+                    <p>Scientific scheme selection based on quantitative and qualitative analysis.</p>
+                </div>
+                <div class="edge-card">
+                    <h4>💻 Digital Partner Ecosystem</h4>
+                    <p>All‑digital onboarding and tracking for a seamless investing experience.</p>
+                </div>
+                <div class="edge-card">
+                    <h4>🎯 Tankrich Nudges</h4>
+                    <p>Timely prompts and insights to keep you on track toward your goals.</p>
+                </div>
+                <div class="edge-card">
+                    <h4>📋 Annual Reviews</h4>
+                    <p>Periodic portfolio reviews to ensure your investments stay aligned.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- Returns Expectations section -->
-  <section id="returns">
-    <h2 class="section-title">Returns Expectations</h2>
-    <p>Different mutual fund categories have very different long‑term return profiles. The table below shows typical median compound annual growth rates (CAGR) over 15–20 years. These figures are not guaranteed – they illustrate historical medians and can vary across market cycles.</p>
-    <div class="table-responsive">
-      <table>
-        <thead>
-          <tr><th>Category</th><th>Estimated Median CAGR*</th><th>Notes</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Large‑Cap Equity</td><td>11–13%</td><td>Tracks broad market indices like Nifty 50/Sensex; includes underperformers and outperformers.</td></tr>
-          <tr><td>Mid‑Cap Equity</td><td>14–16%</td><td>Higher growth potential but more volatility.</td></tr>
-          <tr><td>Small‑Cap Equity</td><td>15–17%</td><td>Strong long‑term growth tempered by high variance.</td></tr>
-          <tr><td>Multi/Flexi‑Cap</td><td>13–15%</td><td>Diversified exposure across capitalizations.</td></tr>
-          <tr><td>Sectoral/Thematic</td><td>12–14%</td><td>Performance varies widely by sector.</td></tr>
-          <tr><td>Equity‑Linked Savings Scheme (ELSS)</td><td>13–15%</td><td>Tax‑saving equity funds with a three‑year lock‑in.</td></tr>
-          <tr><td>Aggressive Hybrid</td><td>10–12%</td><td>65–80% equity, 20–35% debt.</td></tr>
-          <tr><td>Balanced Hybrid</td><td>9–11%</td><td>Approximately equal allocation to equity and debt.</td></tr>
-          <tr><td>Conservative Hybrid</td><td>7–9%</td><td>10–25% equity, remainder debt.</td></tr>
-          <tr><td>Long‑Term Debt</td><td>6–8%</td><td>Focus on government and corporate bonds.</td></tr>
-          <tr><td>Short‑Term Debt</td><td>5–7%</td><td>Lower duration and lower volatility.</td></tr>
-          <tr><td>Liquid Funds</td><td>5–6%</td><td>Money market focus with high liquidity.</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="font-size:0.9rem;"><em>*These medians are illustrative and based on historical data; actual returns will vary. Mutual fund investments are subject to market risks.</em></p>
-  </section>
+    <!-- Returns Section -->
+    <section id="returns" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Returns Expectations</h2>
+                <p>Historically observed median CAGR ranges across different fund categories.</p>
+            </div>
+            <table class="returns-table">
+                <thead>
+                    <tr>
+                        <th>Fund Category</th>
+                        <th>Median CAGR (5Y+)</th>
+                    </tr>
+                </thead>
+            <tbody>
+                <tr>
+                    <td>Debt Funds (Low risk)</td>
+                    <td>5 – 7%</td>
+                </tr>
+                <tr>
+                    <td>Hybrid/Balanced Funds</td>
+                    <td>8 – 10%</td>
+                </tr>
+                <tr>
+                    <td>Equity Large/Multi‑cap</td>
+                    <td>10 – 12%</td>
+                </tr>
+                <tr>
+                    <td>Equity Mid/Small‑cap</td>
+                    <td>12 – 15%</td>
+                </tr>
+            </tbody>
+            </table>
+            <p class="returns-note">These ranges are illustrative based on historical data and market conditions; actual returns may differ and are not guaranteed.</p>
+        </div>
+    </section>
 
-  <!-- Goal‑driven investing section -->
-  <section id="goal">
-    <h2 class="section-title">Goal‑Driven Investing</h2>
-    <p>We work with you to turn goals into actionable plans:</p>
-    <ul class="list">
-      <li>Define your return requirement (e.g., saving ₹20 Lakh for your child’s education in 15 years).</li>
-      <li>Identify categories whose median long‑term returns meet or slightly exceed your target.</li>
-      <li>Select top‑ranked schemes and asset management companies using our research.</li>
-      <li>Monitor and adjust via systematic nudges – decide between lumpsum vs SIP based on market conditions.</li>
-    </ul>
-    <p>Whether you’re building wealth steadily or looking to maximise returns, our framework keeps your portfolio aligned with your life goals.</p>
-  </section>
+    <!-- Goal‑Driven Investing Section -->
+    <section id="goals" class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Goal‑Driven Investing</h2>
+                <p>Follow a structured process to achieve your financial milestones.</p>
+            </div>
+            <ul class="goals-list">
+                <li>
+                    <span class="icon">🎯</span>
+                    <p><strong>Define your goal & risk appetite</strong><br>Identify the time horizon and returns you need to meet your objectives.</p>
+                </li>
+                <li>
+                    <span class="icon">🗃️</span>
+                    <p><strong>Choose fund categories</strong><br>Allocate across debt, hybrid and equity funds based on risk/return balance.</p>
+                </li>
+                <li>
+                    <span class="icon">🔍</span>
+                    <p><strong>Select specific schemes</strong><br>Use our data‑driven tools to pick the best‑fit schemes in each category.</p>
+                </li>
+                <li>
+                    <span class="icon">📡</span>
+                    <p><strong>Monitor & adjust</strong><br>Stay on course with Tankrich Nudges and periodic portfolio reviews.</p>
+                </li>
+            </ul>
+        </div>
+    </section>
 
-  <!-- Call to Action -->
-  <section id="cta" class="callout">
-    <h2>Ready to Start?</h2>
-    <p>Begin your investment journey with guidance from Tankrich MFD.</p>
-    <div class="btn-group">
-      <a href="https://tidycal.com/tankrich/30-minute-meeting" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Book Discovery Call</a>
-      <a href="https://www.assetplus.in/mfd/ARN-331582" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Sign Up on AssetPlus</a>
-    </div>
-  </section>
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Start Investing?</h2>
+            <p>Book a discovery call or explore our onboarding guide to get started.</p>
+            <div class="cta-group">
+                <a href="https://tidycal.com/tankrich/30-minute-meeting" target="_blank" rel="noopener" class="cta-btn">Book a Discovery Call</a>
+                <a href="info.html" class="cta-btn">Understand Onboarding</a>
+            </div>
+        </div>
+    </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Tankrich MFD</p>
-    <p><a href="contact.html">Contact</a> | <a href="info.html">Info</a></p>
-  </footer>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="info.html">Info</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <p>&copy; 2025 Tankrich MFD. All rights reserved. | Mutual fund investments are subject to market risk. Please read all scheme related documents carefully before investing.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for internal links
+        document.querySelectorAll('nav a[href^="#"], .footer-links a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const targetId = this.getAttribute('href');
+                if (targetId.startsWith('#')) {
+                    e.preventDefault();
+                    const targetEl = document.querySelector(targetId);
+                    if (targetEl) {
+                        targetEl.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+        });
+
+        // Header hide on scroll (only on wider screens)
+        let lastScrollTop = 0;
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            if (window.innerWidth > 768) {
+                if (currentScroll > lastScrollTop && currentScroll > 100) {
+                    header.style.transform = 'translateY(-100%)';
+                } else {
+                    header.style.transform = 'translateY(0)';
+                }
+            }
+            lastScrollTop = currentScroll;
+        });
+    </script>
 </body>
 </html>
