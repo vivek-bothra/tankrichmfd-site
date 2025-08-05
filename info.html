@@ -724,12 +724,15 @@
              * assumes that `info.html` and `contact.html` live in the
              * same directory, which is the case for this site.
              */
-            if (currentSlide >= totalSlides - 2) {
-                // Redirect to the contact page instead of advancing
-                window.location.href = 'contact.html';
-            } else if (currentSlide < totalSlides - 1) {
-                showSlide(currentSlide + 1);
-            }
+                if (currentSlide >= totalSlides - 2) {
+                    // Redirect to the contact page instead of advancing
+                    // Use a relative path to avoid issues when deployed on GitHub Pages.
+                    // The dot prefix ensures the URL resolves against the current directory
+                    // rather than being interpreted relative to a deeper path.
+                    window.location.href = './contact.html';
+                } else if (currentSlide < totalSlides - 1) {
+                    showSlide(currentSlide + 1);
+                }
         }
 
         function previousSlide() {
