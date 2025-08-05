@@ -713,7 +713,21 @@
         }
 
         function nextSlide() {
-            if (currentSlide < totalSlides - 1) {
+            /*
+             * Override the default "next" behaviour when the user reaches
+             * the end of the slide deck. Instead of simply advancing
+             * through the final slides (Success and Questions), clicking
+             * "Next" on the second‑to‑last or last slide will redirect
+             * the user to the main contact page of the site. This
+             * provides a clear call‑to‑action without the user having to
+             * manually navigate back to the menu. The relative URL
+             * assumes that `info.html` and `contact.html` live in the
+             * same directory, which is the case for this site.
+             */
+            if (currentSlide >= totalSlides - 2) {
+                // Redirect to the contact page instead of advancing
+                window.location.href = 'contact.html';
+            } else if (currentSlide < totalSlides - 1) {
                 showSlide(currentSlide + 1);
             }
         }
