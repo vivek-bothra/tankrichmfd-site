@@ -1,100 +1,782 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tankrich MFD – How It Works</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Tankrich MFD - Client Onboarding</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #ffffff;
+            color: #333333;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            display: none;
+            padding: clamp(20px, 5vw, 60px);
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .slide.active {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding-top: clamp(80px, 15vh, 120px);
+            padding-bottom: clamp(80px, 15vh, 120px);
+        }
+
+        .slide h1 {
+            font-size: clamp(1.8rem, 6vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: clamp(15px, 3vh, 30px);
+            text-align: center;
+            color: #1e3c72;
+            line-height: 1.2;
+        }
+
+        .slide h2 {
+            font-size: clamp(1.4rem, 5vw, 2.5rem);
+            font-weight: 600;
+            margin-bottom: clamp(20px, 4vh, 30px);
+            text-align: center;
+            color: #2a5298;
+            line-height: 1.3;
+        }
+
+        .slide h3 {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            font-weight: 600;
+            margin-bottom: clamp(15px, 3vh, 25px);
+            color: #1e3c72;
+            line-height: 1.3;
+        }
+
+        .slide p, .slide li {
+            font-size: clamp(0.9rem, 3vw, 1.3rem);
+            line-height: 1.6;
+            margin-bottom: clamp(10px, 2vh, 15px);
+        }
+
+        .slide ul {
+            margin-left: clamp(15px, 4vw, 30px);
+            margin-bottom: clamp(15px, 3vh, 25px);
+        }
+
+        .process-flow {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            margin: clamp(20px, 5vh, 40px) 0;
+        }
+
+        .process-step {
+            background: #f8f9ff;
+            padding: clamp(15px, 4vw, 30px);
+            border-radius: 15px;
+            text-align: center;
+            width: 100%;
+            max-width: 300px;
+            border: 2px solid #e3e8ff;
+            box-shadow: 0 4px 15px rgba(30,60,114,0.1);
+        }
+
+        .process-step h4 {
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            color: #1e3c72;
+            margin-bottom: 8px;
+        }
+
+        .process-arrow {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: #2a5298;
+            transform: rotate(90deg);
+            margin: 10px 0;
+        }
+
+        .pathway-grid {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(20px, 4vh, 30px);
+            margin: clamp(20px, 4vh, 30px) 0;
+        }
+
+        .pathway-card {
+            background: #f8f9ff;
+            padding: clamp(15px, 4vw, 25px);
+            border-radius: 15px;
+            border: 2px solid #e3e8ff;
+            box-shadow: 0 4px 15px rgba(30,60,114,0.1);
+        }
+
+        .pathway-card h4 {
+            color: #1e3c72;
+            font-size: clamp(1rem, 3.5vw, 1.4rem);
+            margin-bottom: clamp(10px, 2vh, 15px);
+            line-height: 1.3;
+        }
+
+        .timeline-badge {
+            background: #1e3c72;
+            color: white;
+            padding: clamp(6px, 2vw, 8px) clamp(12px, 3vw, 16px);
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: clamp(10px, 2vh, 15px);
+            font-size: clamp(0.8rem, 2.5vw, 0.9rem);
+        }
+
+        .doc-grid {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(20px, 4vh, 40px);
+            margin: clamp(20px, 4vh, 30px) 0;
+        }
+
+        .doc-section {
+            background: #f8f9ff;
+            padding: clamp(15px, 4vw, 25px);
+            border-radius: 15px;
+            border: 2px solid #e3e8ff;
+            box-shadow: 0 4px 15px rgba(30,60,114,0.1);
+        }
+
+        .doc-section h4 {
+            font-size: clamp(1rem, 3.5vw, 1.2rem);
+            margin-bottom: clamp(10px, 2vh, 15px);
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 15px;
+            border-radius: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn {
+            padding: clamp(8px, 2vw, 12px) clamp(16px, 4vw, 24px);
+            background: #1e3c72;
+            border: none;
+            border-radius: 20px;
+            color: white;
+            cursor: pointer;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            font-weight: 600;
+            transition: all 0.3s ease;
+            min-width: clamp(70px, 20vw, 120px);
+            touch-action: manipulation;
+            -webkit-appearance: none;
+        }
+
+        .nav-btn:hover, .nav-btn:active {
+            background: #2a5298;
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #1e3c72;
+            color: white;
+            padding: clamp(6px, 2vw, 10px) clamp(12px, 3vw, 20px);
+            border-radius: 20px;
+            z-index: 1000;
+            font-weight: 600;
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #ffeaa7;
+        }
+
+        .table {
+            background: #f8f9ff;
+            border-radius: 15px;
+            padding: clamp(15px, 4vw, 20px);
+            margin: clamp(15px, 3vh, 20px) 0;
+            border: 2px solid #e3e8ff;
+            box-shadow: 0 4px 15px rgba(30,60,114,0.1);
+            overflow-x: auto;
+        }
+
+        .table-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: clamp(8px, 2vw, 15px);
+            padding: clamp(10px, 2.5vw, 15px);
+            border-bottom: 1px solid #e3e8ff;
+        }
+
+        .table-row > div {
+            padding: clamp(5px, 1vw, 8px) 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .table-row:last-child {
+            border-bottom: none;
+        }
+
+        .table-row:last-child > div {
+            border-bottom: none;
+        }
+
+        .table-header {
+            font-weight: bold;
+            color: #1e3c72;
+            background: #e3e8ff;
+            border-radius: 8px;
+            padding: clamp(8px, 2vw, 12px);
+            margin-bottom: clamp(8px, 2vh, 15px);
+        }
+
+        .table-header > div {
+            border-bottom: none;
+            padding: clamp(5px, 1vw, 8px) 0;
+        }
+
+        .celebration {
+            text-align: center;
+            font-size: clamp(2rem, 8vw, 4rem);
+            margin: clamp(15px, 3vh, 20px) 0;
+        }
+
+        /* Enhanced mobile-specific styles */
+        @media (max-width: 768px) {
+            .process-flow {
+                margin: 20px 0;
+            }
+            
+            .pathway-grid, .doc-grid {
+                margin: 20px 0;
+            }
+            
+            .slide {
+                padding-bottom: 100px; /* Extra space for navigation */
+            }
+            
+            .slide.active {
+                padding-top: 80px;
+            }
+            
+            /* Better touch targets */
+            .nav-btn {
+                min-height: 44px;
+                min-width: 80px;
+            }
+            
+            /* Improved readability */
+            .slide p, .slide li {
+                line-height: 1.7;
+            }
+            
+            /* Better spacing for cards */
+            .pathway-card, .doc-section, .process-step {
+                margin-bottom: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slide {
+                padding: 15px;
+                padding-bottom: 90px;
+            }
+            
+            .slide.active {
+                padding-top: 70px;
+            }
+            
+            .navigation {
+                bottom: 15px;
+                padding: 6px 12px;
+                gap: 8px;
+            }
+            
+            .nav-btn {
+                padding: 10px 16px;
+                min-width: 75px;
+                font-size: 0.85rem;
+            }
+            
+            .slide-counter {
+                top: 15px;
+                right: 15px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 360px) {
+            .slide {
+                padding: 12px;
+                padding-bottom: 85px;
+            }
+            
+            .slide.active {
+                padding-top: 65px;
+            }
+            
+            .nav-btn {
+                padding: 8px 14px;
+                min-width: 70px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* Landscape orientation on mobile */
+        @media (max-height: 600px) and (orientation: landscape) {
+            .slide.active {
+                padding-top: 40px;
+                justify-content: flex-start;
+            }
+            
+            .slide {
+                padding-bottom: 70px;
+            }
+            
+            .slide h1 {
+                margin-bottom: 15px;
+            }
+            
+            .slide h2 {
+                margin-bottom: 20px;
+            }
+            
+            .celebration {
+                font-size: 2rem;
+                margin: 10px 0;
+            }
+        }
+
+        /* Prevent zoom on inputs for iOS */
+        @media screen and (-webkit-min-device-pixel-ratio: 0) {
+            select, textarea, input[type="text"], input[type="password"], 
+            input[type="datetime"], input[type="datetime-local"], 
+            input[type="date"], input[type="month"], input[type="time"], 
+            input[type="week"], input[type="number"], input[type="email"], 
+            input[type="url"], input[type="search"], input[type="tel"], 
+            input[type="color"] {
+                font-size: 16px;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #1a1a1a;
+                color: #ffffff;
+            }
+            
+            .slide {
+                background: #1a1a1a;
+                border-color: #333;
+            }
+            
+            .process-step, .pathway-card, .doc-section, .table {
+                background: #2a2a2a;
+                border-color: #444;
+            }
+            
+            .highlight {
+                background: #4a4a00;
+                border-color: #666600;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="navbar-container">
-      <div class="logo"><a href="index.html">Tankrich MFD</a></div>
-      <nav>
-        <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="info.html">Info</a></li>
-          <li><a href="contact.html">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+    <div class="presentation-container">
+        <div class="slide-counter">
+            <span id="current-slide">1</span> / <span id="total-slides">12</span>
+        </div>
 
-  <section>
-    <h2 class="section-title">Getting Started Is Simple</h2>
-    <p>Our three‑step process makes opening an investment account straightforward for residents and non‑residents.</p>
-    <div class="cards">
-      <div class="card">
-        <h3>Step 1: Account Creation</h3>
-        <p>Provide your full name (as per PAN), PAN details, an Indian mobile number (this can be a friend’s number if you don’t have one), and an email address for notifications. We’ll input the details on a call, and you’ll receive a link via SMS or email for approval.</p>
-        <p><strong>Timeline:</strong> Day 1</p>
-      </div>
-      <div class="card">
-        <h3>Step 2: Account Activation</h3>
-        <p><strong>Residents:</strong> e‑KYC via DigiLocker usually completes automatically in 1–2 days. Manual re‑KYC is required only in some cases.</p>
-        <p><strong>Non‑Residents:</strong> Existing mutual fund investors: 2 business days. First‑time investors using e‑Aadhaar: up to 7 days. Offline KYC: 30–45 days.</p>
-      </div>
-      <div class="card">
-        <h3>Step 3: Investment Ready</h3>
-        <p>Once your account is activated and information updated, you’re ready to invest. Explore mutual funds, fixed deposits and NPS options with guidance from our team.</p>
-      </div>
-    </div>
-  </section>
+        <!-- Slide 1: Welcome -->
+        <div class="slide active">
+            <h1>Welcome to Tankrich MFD</h1>
+            <h2>Your Gateway to Smart Investing</h2>
+            <p style="text-align: center; font-size: clamp(1rem, 4vw, 1.5rem); margin-top: clamp(20px, 5vh, 40px);">Making investing accessible for everyone, everywhere</p>
+        </div>
 
-  <section>
-    <h2 class="section-title">Required Documents</h2>
-    <div class="cards">
-      <div class="card">
-        <h3>Resident Clients</h3>
-        <ul class="list">
-          <li>Aadhaar and PAN</li>
-          <li>Passport‑size photo (selfie if using DigiLocker)</li>
-          <li>Cancelled cheque (for bank verification)</li>
-          <li>Signature on a plain sheet (if needed)</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Non‑Resident Clients</h3>
-        <ul class="list">
-          <li>PAN and e‑Aadhaar</li>
-          <li>Passport and foreign address proof, bank statement</li>
-          <li>OCI card if applicable</li>
-          <li>Signature and copies of documents (for offline KYC)</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+        <!-- Slide 2: Process Overview -->
+        <div class="slide">
+            <h2>Getting Started is Simple</h2>
+            <h3>Our 3-Step Process for MF, FD & NPS Investments</h3>
+            <div class="process-flow">
+                <div class="process-step">
+                    <h4>Step 1</h4>
+                    <p>Account Creation</p>
+                </div>
+                <div class="process-arrow">↓</div>
+                <div class="process-step">
+                    <h4>Step 2</h4>
+                    <p>Account Activation</p>
+                </div>
+                <div class="process-arrow">↓</div>
+                <div class="process-step">
+                    <h4>Step 3</h4>
+                    <p>Investment Ready</p>
+                </div>
+            </div>
+            <p style="text-align: center; font-size: clamp(1rem, 3.5vw, 1.4rem);"><strong>Same streamlined process for all investment types</strong></p>
+        </div>
 
-  <section>
-    <h2 class="section-title">Timelines</h2>
-    <div class="table-responsive">
-      <table>
-        <thead>
-          <tr><th>Activity</th><th>Residents</th><th>Non‑Residents</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Account Creation</td><td>Day 1</td><td>Day 1</td></tr>
-          <tr><td>Information Update</td><td>Day 1</td><td>Day 1</td></tr>
-          <tr><td>Account Activation (e‑KYC)</td><td>Days 1–2</td><td>2–7 days*</td></tr>
-          <tr><td>Investment Ready</td><td>Days 1–4</td><td>Days 4–7*</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="font-size:0.9rem;"><em>*First‑time non‑resident investors may require offline KYC which can extend timelines to 30–45 days.</em></p>
-  </section>
+        <!-- Slide 3: Account Creation -->
+        <div class="slide">
+            <h2>Step 1: Account Creation</h2>
+            <h3>Quick & Easy Setup</h3>
+            <div style="background: #f8f9ff; padding: clamp(15px, 4vw, 30px); border-radius: 15px; border: 2px solid #e3e8ff; box-shadow: 0 4px 15px rgba(30,60,114,0.1);">
+                <p><strong>We gather your essential details during our initial call:</strong></p>
+                <ul>
+                    <li><span class="highlight">Full Name</span> (as per PAN card)</li>
+                    <li><span class="highlight">PAN Details</span> (number and card copy)</li>
+                    <li><span class="highlight">Indian Mobile Number</span> (can be a friend's or family member's number if you don't have one)</li>
+                    <li><span class="highlight">Email Address</span> (for account notifications)</li>
+                </ul>
+                <p>✓ You review and approve the information<br>
+                ✓ Account creation link sent via SMS/email<br>
+                ✓ Account instantly created</p>
+            </div>
+            <div class="timeline-badge">Timeline: Day 1</div>
+        </div>
 
-  <section class="callout">
-    <h2>Ready to take the next step?</h2>
-    <p>Open your account and start investing today.</p>
-    <div class="btn-group">
-      <a href="https://tidycal.com/tankrich/30-minute-meeting" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">Schedule a Meeting</a>
-      <a href="https://www.assetplus.in/mfd/ARN-331582" class="btn btn-primary" target="_blank" rel="noopener noreferrer">Sign Up on AssetPlus</a>
-    </div>
-  </section>
+        <!-- Slide 4: Information Update -->
+        <div class="slide">
+            <h2>Updating Your Information</h2>
+            <h3>Two Convenient Options</h3>
+            <div class="doc-grid">
+                <div class="doc-section">
+                    <h4 style="color: #1e3c72;">Option 1: Mobile App (Recommended)</h4>
+                    <ul>
+                        <li>Login using your 10-digit Indian mobile number</li>
+                        <li>Password is your PAN number</li>
+                        <li>Update personal information anytime</li>
+                    </ul>
+                </div>
+                <div class="doc-section">
+                    <h4 style="color: #1e3c72;">Option 2: Phone Support</h4>
+                    <ul>
+                        <li>Call us directly if you prefer assistance</li>
+                        <li>Our team will update your details over the phone</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-badge">Timeline: Day 1</div>
+        </div>
 
-  <footer>
-    <p>&copy; 2025 Tankrich MFD</p>
-    <p><a href="index.html">Home</a> | <a href="contact.html">Contact</a></p>
-  </footer>
+        <!-- Slide 5: Account Activation Overview -->
+        <div class="slide">
+            <h2>Step 2: Account Activation</h2>
+            <h3>Different Paths Based on Your Status</h3>
+            <div style="background: #f8f9ff; padding: clamp(15px, 4vw, 30px); border-radius: 15px; border: 2px solid #e3e8ff; box-shadow: 0 4px 15px rgba(30,60,114,0.1);">
+                <p><strong>How it works:</strong></p>
+                <ul>
+                    <li>Our partner uses CAMS to verify your e-KYC status</li>
+                    <li>Process varies for Resident vs Non-Resident customers</li>
+                    <li>Most cases are automated for faster processing</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 6: Resident Customers -->
+        <div class="slide">
+            <h2>For Resident Customers</h2>
+            <div class="doc-grid">
+                <div class="doc-section">
+                    <h4 style="color: #1e3c72;">Automatic Processing (Most Cases)</h4>
+                    <ul>
+                        <li>Auto-approved for most resident customers</li>
+                        <li>Instant activation when e-KYC is complete</li>
+                    </ul>
+                </div>
+                <div class="doc-section">
+                    <h4 style="color: #1e3c72;">Manual Verification (When Required)</h4>
+                    <ul>
+                        <li>Re-KYC using Digilocker</li>
+                        <li>Quick Help Guide Available</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="timeline-badge">Timeline: Days 1-2</div>
+        </div>
+
+        <!-- Slide 7: Non-Resident Pathways -->
+        <div class="slide">
+            <h2>For Non-Resident Customers</h2>
+            <h3>Three Pathways Based on Your KYC Status</h3>
+            <div class="pathway-grid">
+                <div class="pathway-card">
+                    <h4>⚡ Pathway 1: Existing MF Investors</h4>
+                    <p>For customers who already have active MF investments</p>
+                    <ul>
+                        <li>KYC already verified online</li>
+                        <li>Simple bank statement upload</li>
+                    </ul>
+                    <div class="timeline-badge">Timeline: 2 business days</div>
+                </div>
+                <div class="pathway-card">
+                    <h4>📱 Pathway 2: First-Time with e-Aadhaar</h4>
+                    <p>New investors who can receive OTPs on Aadhaar-linked mobile</p>
+                    <ul>
+                        <li>Manual document upload (online)</li>
+                        <li>e-Aadhaar verification through OTP</li>
+                    </ul>
+                    <div class="timeline-badge">Timeline: Up to 7 days</div>
+                </div>
+                <div class="pathway-card">
+                    <h4>📮 Pathway 3: Traditional KYC</h4>
+                    <p>When e-Aadhaar access is not available</p>
+                    <ul>
+                        <li>Offline KYC process</li>
+                        <li>Documents sent to Chennai via courier</li>
+                    </ul>
+                    <div class="timeline-badge">Timeline: 30-45 days</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Document Requirements - Resident -->
+        <div class="slide">
+            <h2>Required Documents</h2>
+            <h3>Resident Customers</h3>
+            <div style="background: #f8f9ff; padding: clamp(15px, 4vw, 30px); border-radius: 15px; border: 2px solid #e3e8ff; box-shadow: 0 4px 15px rgba(30,60,114,0.1);">
+                <ul style="font-size: clamp(0.9rem, 3.5vw, 1.4rem); line-height: 2;">
+                    <li>✓ <strong>Aadhaar Card</strong> (Front & Back)</li>
+                    <li>✓ <strong>PAN Card</strong></li>
+                    <li>📷 <strong>Recent Photograph</strong> (Passport size) - <em>Optional selfie may be taken if Digilocker is used</em></li>
+                    <li>🏦 <strong>Cancelled Cheque</strong> (for bank verification) - <em>Optional on need basis</em></li>
+                    <li>✍️ <strong>Signature Sample</strong> (on blank paper) - <em>Optional on need basis</em></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 9: Document Requirements - Non-Resident -->
+        <div class="slide">
+            <h2>Required Documents</h2>
+            <h3>Non-Resident Customers</h3>
+            <div class="doc-grid">
+                <div class="doc-section">
+                    <h4 style="color: #1e3c72;">Pathway 1 & 2 (Online Process)</h4>
+                    <ul>
+                        <li>PAN Card</li>
+                        <li>e-Aadhaar (for OTP verification)</li>
+                        <li>Passport (Indian or Foreign)</li>
+                        <li>Recent Photograph - <em>Optional selfie if Digilocker used</em></li>
+                        <li>Foreign Address Proof</li>
+                        <li>Bank Statement (recent)</li>
+                        <li>Signature Sample - <em>Optional on need basis</em></li>
+                        <li>OCI Card (if applicable)</li>
+                    </ul>
+                </div>
+                <div class="doc-section">
+                    <h4 style="color: #1e3c72;">Pathway 3 (Offline KYC)</h4>
+                    <ul>
+                        <li>PAN Card (photocopy)</li>
+                        <li>Aadhaar Card (photocopy)</li>
+                        <li>Passport (photocopy)</li>
+                        <li>Recent Photograph - <em>Optional selfie if Digilocker used</em></li>
+                        <li>Foreign Address Proof (photocopy)</li>
+                        <li>Signature Sample - <em>Optional on need basis</em></li>
+                        <li>OCI Card (photocopy, if applicable)</li>
+                        <li>KYC Form (to be couriered to Chennai)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Timeline Overview -->
+        <div class="slide">
+            <h2>Timeline Overview</h2>
+            <h3>What to Expect</h3>
+            <div class="table">
+                <div class="table-row table-header">
+                    <div>Activity</div>
+                </div>
+                <div class="table-row">
+                    <div><strong>Account Creation</strong></div>
+                    <div><strong>Resident:</strong> Day 1</div>
+                    <div><strong>Non-Resident:</strong> Day 1</div>
+                </div>
+                <div class="table-row">
+                    <div><strong>Information Update</strong></div>
+                    <div><strong>Resident:</strong> Day 1</div>
+                    <div><strong>Non-Resident:</strong> Day 1</div>
+                </div>
+                <div class="table-row">
+                    <div><strong>e-KYC & Documentation</strong></div>
+                    <div><strong>Resident:</strong> Days 1-2</div>
+                    <div><strong>Non-Resident:</strong><br>
+                        • Pathway 1: 2 days<br>
+                        • Pathway 2: Up to 7 days<br>
+                        • Pathway 3: 30-45 days</div>
+                </div>
+                <div class="table-row">
+                    <div><strong>Investment Ready</strong></div>
+                    <div><strong>Resident:</strong> Days 1-4</div>
+                    <div><strong>Non-Resident:</strong><br>
+                        • Pathway 1: 2-3 days<br>
+                        • Pathway 2: 7-10 days<br>
+                        • Pathway 3: 30-45 days</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Success -->
+        <div class="slide">
+            <h2>You're All Set!</h2>
+            <div class="celebration">🎉</div>
+            <h3 style="text-align: center;">Ready to Build Your Wealth</h3>
+            <div style="background: #f8f9ff; padding: clamp(15px, 4vw, 30px); border-radius: 15px; border: 2px solid #e3e8ff; box-shadow: 0 4px 15px rgba(30,60,114,0.1); text-align: center;">
+                <p style="font-size: clamp(1rem, 3.5vw, 1.4rem); margin-bottom: clamp(15px, 3vh, 20px);"><strong>Congratulations!</strong> Your account is now activated and investment-ready.</p>
+                <h4 style="color: #1e3c72; margin-bottom: clamp(10px, 2vh, 15px);">What's Next:</h4>
+                <ul style="list-style: none; font-size: clamp(0.9rem, 3vw, 1.3rem);">
+                    <li>✓ Explore our investment options (MF, FD, NPS)</li>
+                    <li>✓ Start building your diversified portfolio</li>
+                    <li>✓ Access ongoing support from our expert team</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Slide 12: Contact -->
+        <div class="slide">
+            <h1>Questions?</h1>
+            <p style="text-align: center; font-size: clamp(1.2rem, 4vw, 1.8rem); margin: clamp(20px, 5vh, 40px) 0;">Contact us anytime for support.</p>
+            <div style="text-align: center; margin-top: clamp(30px, 8vh, 60px);">
+                <p style="font-size: clamp(1rem, 3.5vw, 1.4rem); font-style: italic;">Tankrich MFD - Making investing accessible for everyone, everywhere.</p>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn" id="prev-btn" onclick="previousSlide()">← Previous</button>
+            <button class="nav-btn" id="next-btn" onclick="nextSlide()">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            
+            // Update navigation buttons
+            document.getElementById('prev-btn').disabled = currentSlide === 0;
+            document.getElementById('next-btn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                previousSlide();
+            }
+        });
+
+        // Touch/swipe navigation
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const swipeDistance = touchEndX - touchStartX;
+            
+            if (Math.abs(swipeDistance) > swipeThreshold) {
+                if (swipeDistance > 0) {
+                    // Swipe right - go to previous slide
+                    previousSlide();
+                } else {
+                    // Swipe left - go to next slide
+                    nextSlide();
+                }
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('total-slides').textContent = totalSlides;
+            showSlide(0);
+        });
+
+        // Prevent default touch behaviors that might interfere
+        document.addEventListener('touchmove', function(e) {
+            // Allow scrolling within slides but prevent page bouncing
+            if (e.target.closest('.slide')) {
+                return;
+            }
+            e.preventDefault();
+        }, { passive: false });
+    </script>
 </body>
 </html>
