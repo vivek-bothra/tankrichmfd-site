@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -287,177 +286,124 @@
 
         /* Enhanced mobile-specific styles */
         @media (max-width: 768px) {
-            .process-flow {
-                margin: 20px 0;
-            }
-            
-            .pathway-grid, .doc-grid {
-                margin: 20px 0;
-            }
-            
-            .slide {
-                padding-bottom: 100px; /* Extra space for navigation */
-            }
-            
-            .slide.active {
-                padding-top: 80px;
-            }
-            
+            .process-flow { margin: 20px 0; }
+            .pathway-grid, .doc-grid { margin: 20px 0; }
+            .slide { padding-bottom: 100px; }
+            .slide.active { padding-top: 80px; }
+
             /* Better touch targets */
-            .nav-btn {
-                min-height: 44px;
-                min-width: 80px;
-            }
-            
+            .nav-btn { min-height: 44px; min-width: 80px; }
+
             /* Improved readability */
-            .slide p, .slide li {
-                line-height: 1.7;
-            }
-            
+            .slide p, .slide li { line-height: 1.7; }
+
             /* Better spacing for cards */
-            .pathway-card, .doc-section, .process-step {
-                margin-bottom: 15px;
-            }
+            .pathway-card, .doc-section, .process-step { margin-bottom: 15px; }
         }
 
         @media (max-width: 480px) {
-            .slide {
-                padding: 15px;
-                padding-bottom: 90px;
-            }
-            
-            .slide.active {
-                padding-top: 70px;
-            }
-            
-            .navigation {
-                bottom: 15px;
-                padding: 6px 12px;
-                gap: 8px;
-            }
-            
-            .nav-btn {
-                padding: 10px 16px;
-                min-width: 75px;
-                font-size: 0.85rem;
-            }
-            
-            .slide-counter {
-                top: 15px;
-                right: 15px;
-                padding: 6px 12px;
-                font-size: 0.8rem;
-            }
+            .slide { padding: 15px; padding-bottom: 90px; }
+            .slide.active { padding-top: 70px; }
+            .navigation { bottom: 15px; padding: 6px 12px; gap: 8px; }
+            .nav-btn { padding: 10px 16px; min-width: 75px; font-size: 0.85rem; }
+            .slide-counter { top: 15px; right: 15px; padding: 6px 12px; font-size: 0.8rem; }
         }
 
         /* Extra small devices */
         @media (max-width: 360px) {
-            .slide {
-                padding: 12px;
-                padding-bottom: 85px;
-            }
-            
-            .slide.active {
-                padding-top: 65px;
-            }
-            
-            .nav-btn {
-                padding: 8px 14px;
-                min-width: 70px;
-                font-size: 0.8rem;
-            }
+            .slide { padding: 12px; padding-bottom: 85px; }
+            .slide.active { padding-top: 65px; }
+            .nav-btn { padding: 8px 14px; min-width: 70px; font-size: 0.8rem; }
         }
 
         /* Landscape orientation on mobile */
         @media (max-height: 600px) and (orientation: landscape) {
-            .slide.active {
-                padding-top: 40px;
-                justify-content: flex-start;
-            }
-            
-            .slide {
-                padding-bottom: 70px;
-            }
-            
-            .slide h1 {
-                margin-bottom: 15px;
-            }
-            
-            .slide h2 {
-                margin-bottom: 20px;
-            }
-            
-            .celebration {
-                font-size: 2rem;
-                margin: 10px 0;
-            }
+            .slide.active { padding-top: 40px; justify-content: flex-start; }
+            .slide { padding-bottom: 70px; }
+            .slide h1 { margin-bottom: 15px; }
+            .slide h2 { margin-bottom: 20px; }
+            .celebration { font-size: 2rem; margin: 10px 0; }
         }
 
         /* Prevent zoom on inputs for iOS */
         @media screen and (-webkit-min-device-pixel-ratio: 0) {
-            select, textarea, input[type="text"], input[type="password"], 
-            input[type="datetime"], input[type="datetime-local"], 
-            input[type="date"], input[type="month"], input[type="time"], 
-            input[type="week"], input[type="number"], input[type="email"], 
-            input[type="url"], input[type="search"], input[type="tel"], 
-            input[type="color"] {
-                font-size: 16px;
-            }
+            select, textarea, input[type="text"], input[type="password"],
+            input[type="datetime"], input[type="datetime-local"],
+            input[type="date"], input[type="month"], input[type="time"],
+            input[type="week"], input[type="number"], input[type="email"],
+            input[type="url"], input[type="search"], input[type="tel"],
+            input[type="color"] { font-size: 16px; }
         }
 
-        /* Dark mode support — light cards with truly dark text */
-@media (prefers-color-scheme: dark) {
-  /* Keep page chrome dark */
-  body { background:#1a1a1a; color:#e6e6e6; }
-  .slide { background:#1a1a1a; border-color:#333; }
+        /* =========================
+           DARK MODE — FORCE TRUE DARK CARDS & VISIBLE TEXT
+           ========================= */
+        @media (prefers-color-scheme: dark) {
+          /* Page chrome */
+          body { background:#121212 !important; color:#e0e0e0 !important; }
+          .slide { background:transparent !important; border-color:#2b2b2b !important; box-shadow:none !important; }
 
-  /* Light cards */
-  .process-step,
-  .pathway-card,
-  .doc-section,
-  .table {
-    background:#ffffff !important;
-    border-color:#dfe5ff !important;
-    color:#111111 !important;                 /* base text on cards */
-  }
+          /* Headings (global) */
+          .slide h1, .slide h2, .slide h3 { color:#87ceeb !important; }
 
-  /* Force dark text for ALL nested elements inside cards (iOS safe) */
-  .process-step *, .pathway-card *, .doc-section *, .table * {
-    color:#111111 !important;
-    opacity:1 !important;
-    -webkit-text-fill-color:#111111 !important; /* iOS Safari */
-    text-shadow:none !important;
-  }
+          /* Core cards & any inline light blocks */
+          .process-step,
+          .pathway-card,
+          .doc-section,
+          .table,
+          /* inline background overrides */
+          [style*="background:#f8f9ff"], [style*="background: #f8f9ff"] {
+            background:#2a2a2a !important;
+            border-color:#3a3a3a !important;
+            box-shadow:none !important;
+            color:#e0e0e0 !important;
+          }
 
-  /* List markers can be dim on iOS — color them explicitly */
-  .doc-section li::marker,
-  .pathway-card li::marker,
-  .table li::marker { color:#1e3c72 !important; }
+          /* Kill light borders defined inline */
+          [style*="border: 2px solid #e3e8ff"] { border-color:#3a3a3a !important; }
 
-  /* Emphasis with contrast on light cards */
-  .doc-section em, .pathway-card em, .table em { color:#444444 !important; }
-  .doc-section strong, .pathway-card strong, .table strong { color:#0f263f !important; }
+          /* Universal text enforcement inside cards (incl. iOS) */
+          .process-step *, .pathway-card *, .doc-section *, .table *,
+          [style*="background:#f8f9ff"] *, [style*="background: #f8f9ff"] * {
+            color:#e0e0e0 !important;
+            opacity:1 !important;
+            -webkit-text-fill-color:#e0e0e0 !important;
+            text-shadow:none !important;
+          }
 
-  /* Table header/dividers */
-  .table-header { background:#eef2ff !important; color:#1e3c72 !important; }
-  .table-row > div { border-bottom:1px solid #e6e8f2 !important; }
+          /* Card headings accent */
+          .process-step h4, .pathway-card h4, .doc-section h4,
+          .table-header { color:#87ceeb !important; }
 
-  /* Badge & buttons */
-  .timeline-badge { background:#1e3c72; color:#ffffff; }
-  .nav-btn { background:#1e3c72; color:#ffffff; }
-  .nav-btn:hover, .nav-btn:active { background:#2a5298; }
-  .nav-btn:disabled { background:#5f6a7a; color:#d5d9e0; }
+          /* Table header/background & dividers */
+          .table-header {
+            background:#2f2f2f !important;
+            border-color:#3a3a3a !important;
+          }
+          .table-row { border-bottom:1px solid #333 !important; }
+          .table-row > div { border-bottom:1px solid #2e2e2e !important; }
 
-  /* Darker nav pill in dark mode */
-  .navigation { background:rgba(20,24,31,0.92); }
+          /* Badges, arrows, highlights */
+          .timeline-badge { background:#394b6b !important; color:#ffffff !important; }
+          .process-arrow { color:#87ceeb !important; }
+          .highlight {
+            background:#3a2d00 !important;
+            border-color:#6b4d00 !important;
+            color:#ffffff !important;
+          }
 
-  /* Highlight on light cards */
-  .highlight {
-    background:#fff7d6;
-    border-color:#ffeaa7;
-    color:#111111;
-  }
-}
+          /* Nav & controls */
+          .navigation { background:rgba(0,0,0,0.6) !important; }
+          .slide-counter { background:#303030 !important; color:#e0e0e0 !important; }
+          .nav-btn { background:#3b82f6 !important; color:#ffffff !important; }
+          .nav-btn:hover, .nav-btn:active { background:#2563eb !important; }
+          .nav-btn:disabled { background:#444 !important; color:#888 !important; }
+
+          /* Explicitly recolor list markers (some browsers dim them) */
+          .doc-section li::marker,
+          .pathway-card li::marker,
+          .table li::marker { color:#87ceeb !important; }
+        }
     </style>
 </head>
 <body>
@@ -815,4 +761,3 @@
     </script>
 </body>
 </html>
-```
