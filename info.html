@@ -404,72 +404,59 @@
             }
         }
 
-        /* Dark mode support — light cards with dark text for contrast */
-        @media (prefers-color-scheme: dark) {
-          /* Keep overall page dark */
-          body {
-            background: #1a1a1a;
-            color: #e6e6e6;
-          }
+        /* Dark mode support — light cards with truly dark text */
+@media (prefers-color-scheme: dark) {
+  /* Keep page chrome dark */
+  body { background:#1a1a1a; color:#e6e6e6; }
+  .slide { background:#1a1a1a; border-color:#333; }
 
-          .slide {
-            background: #1a1a1a;
-            border-color: #333;
-          }
+  /* Light cards */
+  .process-step,
+  .pathway-card,
+  .doc-section,
+  .table {
+    background:#ffffff !important;
+    border-color:#dfe5ff !important;
+    color:#111111 !important;                 /* base text on cards */
+  }
 
-          /* Light cards */
-          .process-step,
-          .pathway-card,
-          .doc-section,
-          .table {
-            background: #f7f8ff !important;
-            border-color: #dfe5ff !important;
-            color: #1a1a1a !important;
-          }
+  /* Force dark text for ALL nested elements inside cards (iOS safe) */
+  .process-step *, .pathway-card *, .doc-section *, .table * {
+    color:#111111 !important;
+    opacity:1 !important;
+    -webkit-text-fill-color:#111111 !important; /* iOS Safari */
+    text-shadow:none !important;
+  }
 
-          /* Ensure nested text inside cards is dark (bullets, p, li, etc.) */
-          .process-step *, .pathway-card *, .doc-section *, .table * {
-            color: #1a1a1a !important;
-          }
+  /* List markers can be dim on iOS — color them explicitly */
+  .doc-section li::marker,
+  .pathway-card li::marker,
+  .table li::marker { color:#1e3c72 !important; }
 
-          .pathway-card h4,
-          .doc-section h4 {
-            color: #1e3c72 !important;
-          }
+  /* Emphasis with contrast on light cards */
+  .doc-section em, .pathway-card em, .table em { color:#444444 !important; }
+  .doc-section strong, .pathway-card strong, .table strong { color:#0f263f !important; }
 
-          /* Table header/dividers for visibility */
-          .table-header {
-            background: #e9edff !important;
-            color: #1e3c72 !important;
-          }
-          .table-row > div {
-            border-bottom: 1px solid #e6e8f2 !important;
-          }
+  /* Table header/dividers */
+  .table-header { background:#eef2ff !important; color:#1e3c72 !important; }
+  .table-row > div { border-bottom:1px solid #e6e8f2 !important; }
 
-          /* Badges & buttons — high contrast */
-          .timeline-badge {
-            background: #1e3c72;
-            color: #ffffff;
-          }
-          .nav-btn {
-            background: #1e3c72;
-            color: #ffffff;
-          }
-          .nav-btn:hover, .nav-btn:active {
-            background: #2a5298;
-          }
-          .nav-btn:disabled {
-            background: #5f6a7a;
-            color: #d5d9e0;
-          }
+  /* Badge & buttons */
+  .timeline-badge { background:#1e3c72; color:#ffffff; }
+  .nav-btn { background:#1e3c72; color:#ffffff; }
+  .nav-btn:hover, .nav-btn:active { background:#2a5298; }
+  .nav-btn:disabled { background:#5f6a7a; color:#d5d9e0; }
 
-          /* Highlight still readable on light cards */
-          .highlight {
-            background: #fff7d6;
-            border-color: #ffeaa7;
-            color: #1a1a1a;
-          }
-        }
+  /* Darker nav pill in dark mode */
+  .navigation { background:rgba(20,24,31,0.92); }
+
+  /* Highlight on light cards */
+  .highlight {
+    background:#fff7d6;
+    border-color:#ffeaa7;
+    color:#111111;
+  }
+}
     </style>
 </head>
 <body>
