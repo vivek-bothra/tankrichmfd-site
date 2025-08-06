@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -403,27 +404,71 @@
             }
         }
 
-        /* Dark mode support */
+        /* Dark mode support — light cards with dark text for contrast */
         @media (prefers-color-scheme: dark) {
-            body {
-                background: #1a1a1a;
-                color: #ffffff;
-            }
-            
-            .slide {
-                background: #1a1a1a;
-                border-color: #333;
-            }
-            
-            .process-step, .pathway-card, .doc-section, .table {
-                background: #2a2a2a;
-                border-color: #444;
-            }
-            
-            .highlight {
-                background: #4a4a00;
-                border-color: #666600;
-            }
+          /* Keep overall page dark */
+          body {
+            background: #1a1a1a;
+            color: #e6e6e6;
+          }
+
+          .slide {
+            background: #1a1a1a;
+            border-color: #333;
+          }
+
+          /* Light cards */
+          .process-step,
+          .pathway-card,
+          .doc-section,
+          .table {
+            background: #f7f8ff !important;
+            border-color: #dfe5ff !important;
+            color: #1a1a1a !important;
+          }
+
+          /* Ensure nested text inside cards is dark (bullets, p, li, etc.) */
+          .process-step *, .pathway-card *, .doc-section *, .table * {
+            color: #1a1a1a !important;
+          }
+
+          .pathway-card h4,
+          .doc-section h4 {
+            color: #1e3c72 !important;
+          }
+
+          /* Table header/dividers for visibility */
+          .table-header {
+            background: #e9edff !important;
+            color: #1e3c72 !important;
+          }
+          .table-row > div {
+            border-bottom: 1px solid #e6e8f2 !important;
+          }
+
+          /* Badges & buttons — high contrast */
+          .timeline-badge {
+            background: #1e3c72;
+            color: #ffffff;
+          }
+          .nav-btn {
+            background: #1e3c72;
+            color: #ffffff;
+          }
+          .nav-btn:hover, .nav-btn:active {
+            background: #2a5298;
+          }
+          .nav-btn:disabled {
+            background: #5f6a7a;
+            color: #d5d9e0;
+          }
+
+          /* Highlight still readable on light cards */
+          .highlight {
+            background: #fff7d6;
+            border-color: #ffeaa7;
+            color: #1a1a1a;
+          }
         }
     </style>
 </head>
@@ -714,25 +759,13 @@
 
         function nextSlide() {
             /*
-             * Override the default "next" behaviour when the user reaches
-             * the end of the slide deck. Instead of simply advancing
-             * through the final slides (Success and Questions), clicking
-             * "Next" on the second‑to‑last or last slide will redirect
-             * the user to the main contact page of the site. This
-             * provides a clear call‑to‑action without the user having to
-             * manually navigate back to the menu. The relative URL
-             * assumes that `info.html` and `contact.html` live in the
-             * same directory, which is the case for this site.
+             * On the final slides, send users to the contact page.
              */
-                if (currentSlide >= totalSlides - 2) {
-                    // Redirect to the contact page instead of advancing
-                    // Use a relative path to avoid issues when deployed on GitHub Pages.
-                    // The dot prefix ensures the URL resolves against the current directory
-                    // rather than being interpreted relative to a deeper path.
-                    window.location.href = './contact.html';
-                } else if (currentSlide < totalSlides - 1) {
-                    showSlide(currentSlide + 1);
-                }
+            if (currentSlide >= totalSlides - 2) {
+                window.location.href = './contact.html';
+            } else if (currentSlide < totalSlides - 1) {
+                showSlide(currentSlide + 1);
+            }
         }
 
         function previousSlide() {
@@ -771,10 +804,8 @@
             
             if (Math.abs(swipeDistance) > swipeThreshold) {
                 if (swipeDistance > 0) {
-                    // Swipe right - go to previous slide
                     previousSlide();
                 } else {
-                    // Swipe left - go to next slide
                     nextSlide();
                 }
             }
@@ -788,7 +819,6 @@
 
         // Prevent default touch behaviors that might interfere
         document.addEventListener('touchmove', function(e) {
-            // Allow scrolling within slides but prevent page bouncing
             if (e.target.closest('.slide')) {
                 return;
             }
@@ -797,3 +827,4 @@
     </script>
 </body>
 </html>
+```
