@@ -4,22 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tankrich MFD – Mutual Funds For Life</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Base reset */
+        :root {
+            --navy: #1a2e4a;
+            --navy-2: #233d63;
+            --gold: #f0a500;
+            --gold-soft: #f6c766;
+            --white: #ffffff;
+            --text: #1d2530;
+            --muted: #5f6b7a;
+            --surface: #f5f8fc;
+            --card-shadow: 0 10px 28px rgba(26, 46, 74, 0.12);
+        }
+
         *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f6fa;
+        html {
+            scroll-behavior: smooth;
         }
 
-        /* Container helper */
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--surface);
+        }
+
         .container {
             width: 100%;
             max-width: 1200px;
@@ -27,65 +44,84 @@
             padding: 0 1rem;
         }
 
-        /* Header */
         header {
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(26, 46, 74, 0.95);
             backdrop-filter: blur(10px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s ease;
         }
+
         .header-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.75rem 0;
+            padding: 0.8rem 0;
         }
+
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 1.6rem;
-            font-weight: 600;
-            color: #333;
+            gap: 0.6rem;
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--white);
         }
+
         .logo img {
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
         }
+
+        .menu-toggle {
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--white);
+            background: transparent;
+            border-radius: 8px;
+            padding: 0.4rem 0.55rem;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
         nav ul {
             list-style: none;
             display: flex;
-            gap: 1.5rem;
+            gap: 1.4rem;
+            align-items: center;
         }
+
         nav a {
             text-decoration: none;
-            color: #333;
-            font-weight: 500;
+            color: #e9edf2;
+            font-weight: 600;
             position: relative;
-            transition: color 0.3s ease;
+            transition: color 0.25s ease;
         }
-        nav a:hover {
-            color: #667eea;
+
+        nav a:hover,
+        nav a:focus-visible {
+            color: var(--gold-soft);
         }
+
         nav a::after {
             content: "";
             position: absolute;
             left: 0;
-            bottom: -4px;
+            bottom: -6px;
             height: 2px;
             width: 0;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            transition: width 0.3s ease;
+            background: var(--gold);
+            transition: width 0.25s ease;
         }
+
         nav a:hover::after {
             width: 100%;
         }
 
-        /* Hero section */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -93,319 +129,397 @@
             justify-content: center;
             text-align: center;
             position: relative;
-            color: white;
+            color: var(--white);
             overflow: hidden;
+            padding-top: 90px;
         }
+
         .hero::before {
             content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('assets/images/hero-bg.png');
+            inset: 0;
+            background: linear-gradient(135deg, rgba(26, 46, 74, 0.92), rgba(26, 46, 74, 0.65)), url('assets/images/hero-bg.png');
             background-size: cover;
             background-position: center;
-            filter: brightness(0.5);
             z-index: 1;
         }
+
         .hero-content {
             position: relative;
             z-index: 2;
-            max-width: 800px;
+            max-width: 860px;
             padding: 0 1rem;
-            animation: fadeInUp 1s ease forwards;
         }
+
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 0.75rem;
-            font-weight: 700;
+            font-size: clamp(2.2rem, 4.5vw, 4rem);
+            margin-bottom: 0.9rem;
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -0.03em;
         }
+
         .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
+            font-size: clamp(1.05rem, 1.9vw, 1.3rem);
+            margin: 0 auto 2rem;
+            opacity: 0.95;
+            max-width: 720px;
         }
+
         .cta-group {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
             justify-content: center;
         }
+
         .cta-btn {
             display: inline-block;
-            padding: 0.75rem 1.5rem;
+            padding: 0.8rem 1.6rem;
             border-radius: 30px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
+            border: 2px solid transparent;
+            background: var(--gold);
+            color: var(--navy);
             text-decoration: none;
-            font-weight: 600;
-            box-shadow: 0 10px 30px rgba(102,126,234,0.4);
-            transition: all 0.3s ease;
+            font-weight: 700;
+            box-shadow: 0 10px 24px rgba(240, 165, 0, 0.35);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
         }
+
         .cta-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(102,126,234,0.6);
+            box-shadow: 0 14px 28px rgba(240, 165, 0, 0.45);
+            background: #ffb61e;
         }
 
-        /* Section styles */
+        .cta-btn.secondary {
+            background: transparent;
+            border-color: rgba(255, 255, 255, 0.72);
+            color: var(--white);
+            box-shadow: none;
+        }
+
+        .cta-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.14);
+            box-shadow: none;
+        }
+
         section.section {
-            padding: 80px 0;
-            background: #ffffff;
+            padding: 78px 0;
+            background: var(--white);
         }
+
         section.section:nth-of-type(even) {
-            background: #f8f9fa;
+            background: var(--surface);
         }
+
         .section-title {
             text-align: center;
-            margin-bottom: 60px;
-        }
-        .section-title h2 {
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        .section-title p {
-            max-width: 600px;
-            margin: 0 auto;
-            font-size: 1rem;
-            color: #666;
+            margin-bottom: 48px;
         }
 
-        /* About section */
+        .section-title h2 {
+            font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+            margin-bottom: 0.7rem;
+            color: var(--navy);
+            letter-spacing: -0.02em;
+        }
+
+        .section-title p {
+            max-width: 640px;
+            margin: 0 auto;
+            font-size: 1rem;
+            color: var(--muted);
+        }
+
+        .team-grid,
+        .features-grid,
+        .edge-grid,
+        .goals-list {
+            margin-top: 24px;
+        }
+
         .team-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 40px;
-        }
-        .team-card {
-            background: #ffffff;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-align: center;
-        }
-        .team-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-        }
-        .team-card h3 {
-            color: #667eea;
-            margin-bottom: 0.5rem;
-            font-size: 1.4rem;
-        }
-        .team-card p {
-            color: #555;
-            font-size: 0.95rem;
-            line-height: 1.7;
-        }
-
-        /* Features (Why Mutual Funds) section */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
-            margin-top: 40px;
-        }
-        .feature {
-            background: #ffffff;
-            border-radius: 15px;
-            padding: 1.5rem;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
-        }
-        .feature:hover {
-            transform: translateY(-5px);
-        }
-        .feature .icon {
-            font-size: 1.5rem;
-            width: 50px;
-            height: 50px;
-            margin: 0 auto 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            border-radius: 50%;
-        }
-        .feature h3 {
-            margin-bottom: 0.5rem;
-            color: #333;
-            font-size: 1.2rem;
-        }
-        .feature p {
-            color: #555;
-            font-size: 0.9rem;
         }
 
-        /* Edge section */
+        .team-card,
+        .feature,
+        .edge-card,
+        .goals-list li {
+            background: var(--white);
+            border-radius: 14px;
+            padding: 1.45rem;
+            box-shadow: var(--card-shadow);
+            border: 1px solid rgba(35, 61, 99, 0.08);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .team-card:hover,
+        .feature:hover,
+        .edge-card:hover,
+        .goals-list li:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 30px rgba(26, 46, 74, 0.16);
+        }
+
+        .team-card {
+            text-align: center;
+        }
+
+        .team-card h3 {
+            color: var(--navy);
+            margin-bottom: 0.45rem;
+            font-size: 1.35rem;
+        }
+
+        .team-card p,
+        .feature p,
+        .edge-card p,
+        .goals-list li p {
+            color: #465262;
+            font-size: 0.95rem;
+        }
+
+        .features-grid,
         .edge-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 40px;
-        }
-        .edge-card {
-            padding: 1.5rem;
-            border-radius: 15px;
-            color: white;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            transition: transform 0.3s ease;
-        }
-        .edge-card:hover {
-            transform: translateY(-5px);
-        }
-        .edge-card h4 {
-            margin-bottom: 0.5rem;
-            font-size: 1.1rem;
-        }
-        .edge-card p {
-            font-size: 0.9rem;
-            opacity: 0.9;
-        }
-
-        /* Returns section */
-        .returns-table {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            border-collapse: collapse;
-            margin-top: 40px;
-            background: #ffffff;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-        }
-        .returns-table th, .returns-table td {
-            padding: 1rem;
-            text-align: left;
-        }
-        .returns-table th {
-            background: #f0f1f7;
-            color: #333;
-            font-weight: 600;
-        }
-        .returns-table tr:nth-child(even) td {
-            background: #f9f9fb;
-        }
-        .returns-note {
-            max-width: 800px;
-            margin: 1rem auto 0;
-            font-size: 0.85rem;
-            color: #777;
-            text-align: center;
-        }
-
-        /* Goal-driven section */
-        .goals-list {
-            max-width: 800px;
-            margin: 0 auto;
-            margin-top: 30px;
-            list-style: none;
-            display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
+            gap: 1.25rem;
         }
-        .goals-list li {
-            background: #ffffff;
-            border-radius: 12px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+
+        .feature .icon,
         .goals-list li span.icon {
-            font-size: 1.3rem;
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: #fff;
-            border-radius: 50%;
+            font-size: 1.4rem;
+            width: 46px;
+            height: 46px;
+            margin: 0 auto 0.95rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 0.5rem;
-        }
-        .goals-list li p {
-            font-size: 0.9rem;
-            color: #555;
+            background: linear-gradient(135deg, var(--navy), var(--navy-2));
+            color: var(--white);
+            border-radius: 50%;
         }
 
-        /* CTA section */
+        .feature h3 {
+            margin-bottom: 0.45rem;
+            color: var(--navy);
+            font-size: 1.15rem;
+            text-align: center;
+        }
+
+        .feature p {
+            text-align: center;
+        }
+
+        .edge-card h4 {
+            margin-bottom: 0.5rem;
+            font-size: 1.08rem;
+            color: var(--navy);
+        }
+
+        .returns-table-wrap {
+            max-width: 900px;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+
+        .returns-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            background: var(--white);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            min-width: 520px;
+        }
+
+        .returns-table th,
+        .returns-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #edf1f6;
+        }
+
+        .returns-table th {
+            background: var(--navy);
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        .returns-table tr:nth-child(even) td {
+            background: #f8fbff;
+        }
+
+        .returns-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .returns-note {
+            max-width: 840px;
+            margin: 1rem auto 0;
+            font-size: 0.87rem;
+            color: #66758a;
+            text-align: center;
+        }
+
+        .goals-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            max-width: 980px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .goals-list li span.icon {
+            margin-left: 0;
+        }
+
         .cta-section {
             padding: 60px 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, var(--navy), #2f4f7c);
+            color: var(--white);
             text-align: center;
         }
+
         .cta-section h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
+            font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+            margin-bottom: 0.65rem;
         }
+
         .cta-section p {
-            font-size: 1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.6rem;
         }
 
-        /* Footer */
         footer {
-            background: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-        }
-        footer .footer-links {
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-        footer .footer-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
-        footer .footer-links a:hover {
-            color: #667eea;
-        }
-        footer p {
-            font-size: 0.8rem;
+            background: #122238;
+            color: #d9e3f0;
+            padding: 2.2rem 0;
         }
 
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        .footer-col h4 {
+            color: var(--white);
+            margin-bottom: 0.65rem;
+            font-size: 1rem;
+        }
+
+        .footer-col p,
+        .footer-col li,
+        .footer-col a {
+            font-size: 0.9rem;
+            color: #d9e3f0;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        .footer-col ul {
+            display: grid;
+            gap: 0.3rem;
+            list-style: none;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.4rem;
+        }
+
+        .social-links a {
+            border: 1px solid rgba(240, 165, 0, 0.6);
+            color: var(--gold-soft);
+            border-radius: 999px;
+            padding: 0.32rem 0.7rem;
+        }
+
+        .social-links a:hover {
+            background: rgba(240, 165, 0, 0.15);
+        }
+
+        .footer-disclaimer {
+            margin-top: 1.1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.12);
+            font-size: 0.8rem;
+            color: #c2cfde;
+            line-height: 1.6;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 900px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
             }
         }
-        /* Responsive adjustments */
+
         @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.4rem;
+            .menu-toggle {
+                display: inline-flex;
             }
-            .hero p {
-                font-size: 1.1rem;
-            }
-            nav ul {
+
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--navy);
+                border-top: 1px solid rgba(255, 255, 255, 0.12);
                 display: none;
+                padding: 0.75rem 1rem 1rem;
             }
+
+            nav.open {
+                display: block;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.8rem;
+            }
+
+            .hero {
+                min-height: 92vh;
+            }
+
             .cta-group {
                 flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cta-btn {
+                text-align: center;
+            }
+
+            .returns-table {
+                min-width: 100%;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -417,7 +531,8 @@
                 <img src="assets/images/logo.png" alt="Tankrich Logo">
                 <span>Tankrich MFD</span>
             </div>
-            <nav>
+            <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">☰</button>
+            <nav id="main-nav">
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="#about">About</a></li>
@@ -430,20 +545,18 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="hero-content">
+        <div class="hero-content reveal">
             <h1>Invest with Confidence</h1>
             <p>We are builders who love markets. Your trusted partner in data driven mutual fund investing.</p>
             <div class="cta-group">
                 <a href="https://tidycal.com/tankrich/30-minute-meeting" target="_blank" rel="noopener" class="cta-btn">Book a Discovery Call</a>
-                <a href="info.html" class="cta-btn">Learn About Onboarding</a>
+                <a href="info.html" class="cta-btn secondary">Learn About Onboarding</a>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="section">
+    <section id="about" class="section reveal">
         <div class="container">
             <div class="section-title">
                 <h2>Meet Our Team</h2>
@@ -453,8 +566,8 @@
                 <div class="team-card">
                     <h3>Vivek Bothra</h3>
                     <p><strong>Founder</strong><br><br>
-                    • 15+ years of equity investing experience<br>
-                    • Acknowledged as a top 50 small‑cap investor by India Business Magazine<br>
+                    • 15+ years of equity investing experience<br>
+                    • Acknowledged as a top 50 small-cap investor by India Business Magazine<br>
                     • 10K+ Social media readership<br>
                     • MBA (Gold Medalist) & CFA (US L2)<br>
                     • 200+ articles published on tankrich</p>
@@ -463,8 +576,8 @@
                     <h3>Vineet Bothra</h3>
                     <p><strong>Head Operations</strong><br><br>
                     • Credit and Debt specialist<br>
-                    • 10 years at a top‑10 Indian bank<br>
-                    • ₹50 Cr+ AUM originated<br>
+                    • 10 years at a top-10 Indian bank<br>
+                    • ₹50 Cr+ AUM originated<br>
                     • Chartered Accountant<br>
                     • Operations experience</p>
                 </div>
@@ -472,8 +585,7 @@
         </div>
     </section>
 
-    <!-- Why Mutual Funds Section -->
-    <section id="why" class="section">
+    <section id="why" class="section reveal">
         <div class="container">
             <div class="section-title">
                 <h2>Why Mutual Funds?</h2>
@@ -482,7 +594,7 @@
             <div class="features-grid">
                 <div class="feature">
                     <div class="icon">💰</div>
-                    <h3>Tax‑Efficient Structure</h3>
+                    <h3>Tax-Efficient Structure</h3>
                     <p>Optimised tax treatment helps you keep more of your returns.</p>
                 </div>
                 <div class="feature">
@@ -498,7 +610,7 @@
                 <div class="feature">
                     <div class="icon">🛡️</div>
                     <h3>Regulation & Transparency</h3>
-                    <p>SEBI‑regulated funds offer transparency and investor protection.</p>
+                    <p>SEBI-regulated funds offer transparency and investor protection.</p>
                 </div>
                 <div class="feature">
                     <div class="icon">🎯</div>
@@ -514,8 +626,7 @@
         </div>
     </section>
 
-    <!-- Our Edge Section -->
-    <section id="edge" class="section">
+    <section id="edge" class="section reveal">
         <div class="container">
             <div class="section-title">
                 <h2>Our Edge</h2>
@@ -531,12 +642,12 @@
                     <p>Decades of combined experience across stocks, commodities and bonds.</p>
                 </div>
                 <div class="edge-card">
-                    <h4>📈 Data‑Driven Selection</h4>
+                    <h4>📈 Data-Driven Selection</h4>
                     <p>Scientific scheme selection based on quantitative and qualitative analysis.</p>
                 </div>
                 <div class="edge-card">
                     <h4>💻 Digital Partner Ecosystem</h4>
-                    <p>All‑digital onboarding and tracking for a seamless investing experience.</p>
+                    <p>All-digital onboarding and tracking for a seamless investing experience.</p>
                 </div>
                 <div class="edge-card">
                     <h4>🎯 Tankrich Nudges</h4>
@@ -550,48 +661,48 @@
         </div>
     </section>
 
-    <!-- Returns Section -->
-    <section id="returns" class="section">
+    <section id="returns" class="section reveal">
         <div class="container">
             <div class="section-title">
                 <h2>Returns Expectations</h2>
                 <p>Historically observed median CAGR ranges across different fund categories.</p>
             </div>
-            <table class="returns-table">
-                <thead>
-                    <tr>
-                        <th>Fund Category</th>
-                        <th>Median CAGR (5Y+)</th>
-                    </tr>
-                </thead>
-            <tbody>
-                <tr>
-                    <td>Debt Funds (Low risk)</td>
-                    <td>5 – 7%</td>
-                </tr>
-                <tr>
-                    <td>Hybrid/Balanced Funds</td>
-                    <td>8 – 10%</td>
-                </tr>
-                <tr>
-                    <td>Equity Large/Multi‑cap</td>
-                    <td>10 – 12%</td>
-                </tr>
-                <tr>
-                    <td>Equity Mid/Small‑cap</td>
-                    <td>12 – 15%</td>
-                </tr>
-            </tbody>
-            </table>
+            <div class="returns-table-wrap">
+                <table class="returns-table">
+                    <thead>
+                        <tr>
+                            <th>Fund Category</th>
+                            <th>Median CAGR (5Y+)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Debt Funds (Low risk)</td>
+                            <td>5 - 7%</td>
+                        </tr>
+                        <tr>
+                            <td>Hybrid/Balanced Funds</td>
+                            <td>8 - 10%</td>
+                        </tr>
+                        <tr>
+                            <td>Equity Large/Multi-cap</td>
+                            <td>10 - 12%</td>
+                        </tr>
+                        <tr>
+                            <td>Equity Mid/Small-cap</td>
+                            <td>12 - 15%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <p class="returns-note">These ranges are illustrative based on historical data and market conditions; actual returns may differ and are not guaranteed.</p>
         </div>
     </section>
 
-    <!-- Goal‑Driven Investing Section -->
-    <section id="goals" class="section">
+    <section id="goals" class="section reveal">
         <div class="container">
             <div class="section-title">
-                <h2>Goal‑Driven Investing</h2>
+                <h2>Goal-Driven Investing</h2>
                 <p>Follow a structured process to achieve your financial milestones.</p>
             </div>
             <ul class="goals-list">
@@ -605,7 +716,7 @@
                 </li>
                 <li>
                     <span class="icon">🔍</span>
-                    <p><strong>Select specific schemes</strong><br>Use our data‑driven tools to pick the best‑fit schemes in each category.</p>
+                    <p><strong>Select specific schemes</strong><br>Use our data-driven tools to pick the best-fit schemes in each category.</p>
                 </li>
                 <li>
                     <span class="icon">📡</span>
@@ -615,59 +726,91 @@
         </div>
     </section>
 
-    <!-- Call to Action Section -->
-    <section class="cta-section">
+    <section class="cta-section reveal">
         <div class="container">
             <h2>Ready to Start Investing?</h2>
             <p>Book a discovery call or explore our onboarding guide to get started.</p>
             <div class="cta-group">
                 <a href="https://tidycal.com/tankrich/30-minute-meeting" target="_blank" rel="noopener" class="cta-btn">Book a Discovery Call</a>
-                <a href="info.html" class="cta-btn">Understand Onboarding</a>
+                <a href="info.html" class="cta-btn secondary">Understand Onboarding</a>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="footer-links">
-                <a href="#home">Home</a>
-                <a href="info.html">Info</a>
-                <a href="contact.html">Contact</a>
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h4>Tankrich MFD</h4>
+                    <p>Mutual Funds For Life with goal-based guidance, transparent execution, and disciplined reviews.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="info.html">Info</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="https://wa.me/918910458253" target="_blank" rel="noopener">WhatsApp</a>
+                        <a href="https://tidycal.com/tankrich/30-minute-meeting" target="_blank" rel="noopener">Book Call</a>
+                    </div>
+                </div>
             </div>
-            <p>&copy; 2025 Tankrich MFD. All rights reserved. | Mutual fund investments are subject to market risk. Please read all scheme related documents carefully before investing.</p>
+            <p class="footer-disclaimer">&copy; 2025 Tankrich MFD. All rights reserved. Mutual fund investments are subject to market risk. Please read all scheme related documents carefully before investing.</p>
         </div>
     </footer>
 
     <script>
-        // Smooth scroll for internal links
-        document.querySelectorAll('nav a[href^="#"], .footer-links a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+        const toggleBtn = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('nav');
+
+        if (toggleBtn && nav) {
+            toggleBtn.addEventListener('click', () => {
+                const isOpen = nav.classList.toggle('open');
+                toggleBtn.setAttribute('aria-expanded', String(isOpen));
+            });
+        }
+
+        document.querySelectorAll('nav a[href^="#"], .footer-col a[href^="#"]').forEach((anchor) => {
+            anchor.addEventListener('click', function (e) {
                 const targetId = this.getAttribute('href');
-                if (targetId.startsWith('#')) {
+                if (targetId && targetId.startsWith('#')) {
                     e.preventDefault();
                     const targetEl = document.querySelector(targetId);
                     if (targetEl) {
                         targetEl.scrollIntoView({ behavior: 'smooth' });
                     }
+                    nav.classList.remove('open');
+                    toggleBtn.setAttribute('aria-expanded', 'false');
                 }
             });
         });
 
-        // Header hide on scroll (only on wider screens)
         let lastScrollTop = 0;
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
             const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
             if (window.innerWidth > 768) {
-                if (currentScroll > lastScrollTop && currentScroll > 100) {
-                    header.style.transform = 'translateY(-100%)';
-                } else {
-                    header.style.transform = 'translateY(0)';
-                }
+                header.style.transform = (currentScroll > lastScrollTop && currentScroll > 100) ? 'translateY(-100%)' : 'translateY(0)';
             }
             lastScrollTop = currentScroll;
         });
+
+        const revealItems = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        revealItems.forEach((el) => observer.observe(el));
     </script>
 </body>
 </html>
