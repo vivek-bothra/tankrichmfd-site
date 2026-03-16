@@ -6,52 +6,75 @@
     <title>Tankrich MFD – Mutual Funds For Life</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* ================================================================
+           CSS CUSTOM PROPERTIES — Money Forest Palette
+           ================================================================ */
         :root {
-            --navy: #1a2e4a;
-            --navy-2: #233d63;
-            --gold: #f0a500;
-            --gold-soft: #f6c766;
-            --white: #ffffff;
-            --text: #1d2530;
-            --muted: #5f6b7a;
-            --surface: #f5f8fc;
-            --card-shadow: 0 10px 28px rgba(26, 46, 74, 0.12);
+            --color-bg:             #0a1a0f;
+            --color-bg-mid:         #112b17;
+            --color-surface:        #1a3d22;
+            --color-surface-raised: #1f4a28;
+            --color-gold:           #c9a84c;
+            --color-gold-light:     #e8c96e;
+            --color-green-bright:   #4caf6e;
+            --color-green-muted:    #2e7d46;
+            --color-text:           #e8f5e9;
+            --color-text-muted:     #a5c9a8;
         }
 
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        /* ================================================================
+           RESET & BASE
+           ================================================================ */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'DM Sans', 'Segoe UI', Tahoma, sans-serif;
             line-height: 1.7;
-            color: var(--text);
-            background: var(--surface);
+            color: var(--color-text);
+            background: var(--color-bg);
+            overflow-x: hidden;
         }
 
+        /* ================================================================
+           GRAIN / NOISE TEXTURE OVERLAY (fixed, mix-blend-mode overlay)
+           ================================================================ */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='0.12'/%3E%3C/svg%3E");
+            background-size: 200px 200px;
+            pointer-events: none;
+            z-index: 9000;
+            opacity: 0.5;
+            mix-blend-mode: overlay;
+        }
+
+        /* ================================================================
+           CONTAINER
+           ================================================================ */
         .container {
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 1.4rem;
         }
 
+        /* ================================================================
+           NAVBAR
+           ================================================================ */
         header {
             position: fixed;
             top: 0;
             width: 100%;
-            z-index: 1000;
-            background: rgba(26, 46, 74, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            z-index: 8000;
+            background: rgba(10, 26, 15, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(201, 168, 76, 0.13);
             transition: transform 0.3s ease;
         }
 
@@ -59,270 +82,457 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.8rem 0;
+            padding: 0.85rem 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: var(--white);
+            gap: 0.55rem;
+            text-decoration: none;
         }
 
         .logo img {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
         }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.28rem;
+            font-weight: 700;
+            color: var(--color-text);
+        }
+
+        .logo-text .accent { color: var(--color-gold); }
 
         .menu-toggle {
             display: none;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: var(--white);
+            border: 1px solid rgba(201, 168, 76, 0.4);
+            color: var(--color-text);
             background: transparent;
             border-radius: 8px;
-            padding: 0.4rem 0.55rem;
-            font-size: 1rem;
+            padding: 0.4rem 0.6rem;
+            font-size: 1.1rem;
             cursor: pointer;
+            transition: background 0.2s ease;
         }
+
+        .menu-toggle:hover { background: rgba(201, 168, 76, 0.1); }
 
         nav ul {
             list-style: none;
             display: flex;
-            gap: 1.4rem;
+            gap: 1.6rem;
             align-items: center;
         }
 
         nav a {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            font-size: 0.92rem;
             text-decoration: none;
-            color: #e9edf2;
-            font-weight: 600;
+            color: var(--color-text-muted);
             position: relative;
             transition: color 0.25s ease;
+            letter-spacing: 0.02em;
         }
 
-        nav a:hover,
-        nav a:focus-visible {
-            color: var(--gold-soft);
-        }
+        nav a:hover, nav a:focus-visible { color: var(--color-gold-light); }
 
         nav a::after {
-            content: "";
+            content: '';
             position: absolute;
             left: 0;
-            bottom: -6px;
-            height: 2px;
+            bottom: -4px;
+            height: 1.5px;
             width: 0;
-            background: var(--gold);
-            transition: width 0.25s ease;
+            background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light));
+            transition: width 0.3s ease;
         }
 
-        nav a:hover::after {
-            width: 100%;
-        }
+        nav a:hover::after { width: 100%; }
 
+        /* ================================================================
+           HERO
+           ================================================================ */
         .hero {
             min-height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
-            text-align: center;
             position: relative;
-            color: var(--white);
             overflow: hidden;
-            padding-top: 90px;
+            padding-top: 80px;
+            background:
+                radial-gradient(ellipse 65% 75% at 12% 65%, rgba(46, 125, 70, 0.24) 0%, transparent 70%),
+                radial-gradient(ellipse 45% 45% at 82% 22%, rgba(201, 168, 76, 0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 55% 55% at 50% 85%, rgba(26, 61, 34, 0.45) 0%, transparent 80%),
+                linear-gradient(168deg, var(--color-bg) 0%, #0d2212 50%, var(--color-bg-mid) 100%);
         }
 
-        .hero::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(26, 46, 74, 0.92), rgba(26, 46, 74, 0.65)), url('assets/images/hero-bg.png');
-            background-size: cover;
-            background-position: center;
-            z-index: 1;
-        }
-
-        .hero-content {
+        .hero > .container {
+            display: flex;
+            align-items: center;
+            min-height: calc(100vh - 80px);
             position: relative;
-            z-index: 2;
-            max-width: 860px;
-            padding: 0 1rem;
+            z-index: 3;
+        }
+
+        .hero-content { max-width: 660px; padding: 3rem 0; }
+
+        /* Staggered fade-up on hero text */
+        .hero-eyebrow {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.71rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--color-gold);
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeUp 0.7s ease forwards 0.1s;
         }
 
         .hero h1 {
-            font-size: clamp(2.2rem, 4.5vw, 4rem);
-            margin-bottom: 0.9rem;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.6rem, 5.5vw, 4.2rem);
             font-weight: 800;
-            line-height: 1.15;
-            letter-spacing: -0.03em;
+            line-height: 1.12;
+            letter-spacing: -0.025em;
+            margin-bottom: 1.2rem;
+            opacity: 0;
+            animation: fadeUp 0.7s ease forwards 0.22s;
         }
 
-        .hero p {
-            font-size: clamp(1.05rem, 1.9vw, 1.3rem);
-            margin: 0 auto 2rem;
-            opacity: 0.95;
-            max-width: 720px;
+        .hero h1 em {
+            font-style: italic;
+            color: var(--color-gold-light);
+        }
+
+        .hero-subtext {
+            font-size: clamp(1rem, 1.8vw, 1.18rem);
+            color: var(--color-text-muted);
+            margin-bottom: 2.2rem;
+            max-width: 520px;
+            line-height: 1.75;
+            opacity: 0;
+            animation: fadeUp 0.7s ease forwards 0.36s;
         }
 
         .cta-group {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
-            justify-content: center;
+            opacity: 0;
+            animation: fadeUp 0.7s ease forwards 0.5s;
         }
 
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ================================================================
+           CTA BUTTONS — gold shimmer sweep on hover
+           ================================================================ */
         .cta-btn {
             display: inline-block;
-            padding: 0.8rem 1.6rem;
-            border-radius: 30px;
+            padding: 0.82rem 1.75rem;
+            border-radius: 32px;
             border: 2px solid transparent;
-            background: var(--gold);
-            color: var(--navy);
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
             text-decoration: none;
-            font-weight: 700;
-            box-shadow: 0 10px 24px rgba(240, 165, 0, 0.35);
-            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+            cursor: pointer;
+            background: linear-gradient(
+                90deg,
+                var(--color-gold) 0%,
+                var(--color-gold-light) 40%,
+                #f4e68a 58%,
+                var(--color-gold) 100%
+            );
+            background-size: 250% 100%;
+            background-position: 0% 50%;
+            color: #0a1a0f;
+            box-shadow: 0 6px 24px rgba(201, 168, 76, 0.32);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background-position 0.55s ease;
         }
 
         .cta-btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 14px 28px rgba(240, 165, 0, 0.45);
-            background: #ffb61e;
+            box-shadow: 0 12px 36px rgba(201, 168, 76, 0.5);
+            background-position: 100% 50%;
         }
 
         .cta-btn.secondary {
             background: transparent;
-            border-color: rgba(255, 255, 255, 0.72);
-            color: var(--white);
+            background-size: 100% 100%;
+            border-color: rgba(201, 168, 76, 0.55);
+            color: var(--color-gold-light);
             box-shadow: none;
         }
 
         .cta-btn.secondary:hover {
-            background: rgba(255, 255, 255, 0.14);
-            box-shadow: none;
+            background: rgba(201, 168, 76, 0.1);
+            background-size: 100% 100%;
+            border-color: var(--color-gold);
+            box-shadow: 0 4px 20px rgba(201, 168, 76, 0.18);
         }
 
-        section.section {
-            padding: 78px 0;
-            background: var(--white);
+        /* ================================================================
+           LEAF PARTICLES — 8 leaves with staggered CSS keyframes
+           ================================================================ */
+        .leaf-container {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 2;
+            overflow: hidden;
         }
 
-        section.section:nth-of-type(even) {
-            background: var(--surface);
+        .leaf {
+            position: absolute;
+            top: -60px;
+            font-size: 1.45rem;
+            opacity: 0;
+            animation: leafFall var(--ld, 12s) ease-in infinite var(--la, 0s);
+            will-change: transform, opacity;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+        }
+
+        @keyframes leafFall {
+            0%   { transform: translateY(0)      translateX(0)                        rotate(0deg);                  opacity: 0;   }
+            7%   {                                                                                                     opacity: 0.8; }
+            88%  {                                                                                                     opacity: 0.5; }
+            100% { transform: translateY(115vh)  translateX(var(--lx, 60px))          rotate(var(--lr, 360deg));     opacity: 0;   }
+        }
+
+        .leaf:nth-child(1) { left:  8%; --ld: 13s; --la:  0.0s; --lx:  72px; --lr:  300deg; }
+        .leaf:nth-child(2) { left: 19%; --ld: 17s; --la:  2.8s; --lx: -55px; --lr: -265deg; }
+        .leaf:nth-child(3) { left: 31%; --ld: 11s; --la:  5.4s; --lx:  98px; --lr:  415deg; }
+        .leaf:nth-child(4) { left: 46%; --ld: 15s; --la:  1.2s; --lx: -80px; --lr: -340deg; }
+        .leaf:nth-child(5) { left: 59%; --ld: 10s; --la:  3.9s; --lx:  62px; --lr:  285deg; }
+        .leaf:nth-child(6) { left: 71%; --ld: 16s; --la:  6.7s; --lx: -68px; --lr: -385deg; }
+        .leaf:nth-child(7) { left: 83%; --ld: 12s; --la:  2.0s; --lx: 118px; --lr:  325deg; }
+        .leaf:nth-child(8) { left: 93%; --ld:  9s; --la:  4.5s; --lx: -92px; --lr: -245deg; }
+
+        /* ================================================================
+           FOREST SILHOUETTE (absolute, bottom of hero)
+           ================================================================ */
+        .forest-silhouette {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: auto;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* ================================================================
+           WAVE DIVIDERS
+           ================================================================ */
+        .wave-divider {
+            display: block;
+            overflow: hidden;
+            line-height: 0;
+        }
+
+        .wave-divider svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        /* ================================================================
+           SECTIONS
+           ================================================================ */
+        .section {
+            padding: 92px 0;
+            position: relative;
+            max-width: none;
         }
 
         .section-title {
             text-align: center;
-            margin-bottom: 48px;
+            margin-bottom: 58px;
+        }
+
+        .section-tag {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.24em;
+            text-transform: uppercase;
+            color: var(--color-gold);
+            display: block;
+            margin-bottom: 0.6rem;
         }
 
         .section-title h2 {
-            font-size: clamp(1.8rem, 3.2vw, 2.5rem);
-            margin-bottom: 0.7rem;
-            color: var(--navy);
-            letter-spacing: -0.02em;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.9rem, 3.5vw, 2.75rem);
+            font-weight: 700;
+            color: var(--color-text);
+            letter-spacing: -0.022em;
+            line-height: 1.2;
+            margin-bottom: 0.8rem;
         }
 
-        .section-title p {
-            max-width: 640px;
+        .section-title > p {
+            max-width: 600px;
             margin: 0 auto;
-            font-size: 1rem;
-            color: var(--muted);
+            color: var(--color-text-muted);
+            font-size: 1.02rem;
         }
 
-        .team-grid,
-        .features-grid,
-        .edge-grid,
-        .goals-list {
-            margin-top: 24px;
+        /* ================================================================
+           FROSTED GLASS CARD
+           ================================================================ */
+        .glass-card {
+            background: rgba(26, 61, 34, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            border-radius: 16px;
+            padding: 1.75rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
+
+        .glass-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 52px rgba(0, 0, 0, 0.45);
+            border-color: rgba(201, 168, 76, 0.4);
+        }
+
+        /* ================================================================
+           ABOUT / TEAM  (#about — bg-mid)
+           ================================================================ */
+        #about { background: var(--color-bg-mid); }
 
         .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.5rem;
         }
 
-        .team-card,
-        .feature,
-        .edge-card,
-        .goals-list li {
-            background: var(--white);
-            border-radius: 14px;
-            padding: 1.45rem;
-            box-shadow: var(--card-shadow);
-            border: 1px solid rgba(35, 61, 99, 0.08);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-        }
-
-        .team-card:hover,
-        .feature:hover,
-        .edge-card:hover,
-        .goals-list li:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 14px 30px rgba(26, 46, 74, 0.16);
-        }
-
-        .team-card {
+        .team-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            color: var(--color-gold-light);
+            margin-bottom: 0.8rem;
             text-align: center;
         }
 
-        .team-card h3 {
-            color: var(--navy);
-            margin-bottom: 0.45rem;
-            font-size: 1.35rem;
+        .team-card p {
+            color: var(--color-text-muted);
+            font-size: 0.93rem;
+            line-height: 1.85;
         }
 
-        .team-card p,
-        .feature p,
-        .edge-card p,
-        .goals-list li p {
-            color: #465262;
-            font-size: 0.95rem;
-        }
+        /* ================================================================
+           WHY MUTUAL FUNDS  (#why — bg)
+           ================================================================ */
+        #why { background: var(--color-bg); }
 
-        .features-grid,
-        .edge-grid {
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(262px, 1fr));
             gap: 1.25rem;
         }
 
-        .feature .icon,
-        .goals-list li span.icon {
-            font-size: 1.4rem;
-            width: 46px;
-            height: 46px;
-            margin: 0 auto 0.95rem;
+        .feature {
+            text-align: center;
+            padding: 1.75rem 1.5rem;
+        }
+
+        .feature .icon {
+            font-size: 1.5rem;
+            width: 54px;
+            height: 54px;
+            margin: 0 auto 1.1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--navy), var(--navy-2));
-            color: var(--white);
+            background: linear-gradient(135deg, var(--color-surface), var(--color-surface-raised));
+            border: 1px solid rgba(201, 168, 76, 0.25);
             border-radius: 50%;
+            color: var(--color-gold);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .feature:hover .icon {
+            transform: scale(1.1);
+            border-color: rgba(201, 168, 76, 0.55);
+            box-shadow: 0 6px 24px rgba(201, 168, 76, 0.2);
         }
 
         .feature h3 {
-            margin-bottom: 0.45rem;
-            color: var(--navy);
-            font-size: 1.15rem;
-            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.08rem;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
         }
 
         .feature p {
-            text-align: center;
+            color: var(--color-text-muted);
+            font-size: 0.92rem;
         }
+
+        /* ================================================================
+           OUR EDGE  (#edge — bg-mid) — staggered 2-col, gold left border
+           ================================================================ */
+        #edge { background: var(--color-bg-mid); }
+
+        .edge-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+            align-items: start;
+        }
+
+        .edge-card {
+            border-left: 3px solid var(--color-gold);
+            padding: 1.2rem 1.2rem 1.2rem 1.4rem;
+            background: rgba(26, 61, 34, 0.45);
+            border-radius: 0 12px 12px 0;
+            border-top: 1px solid rgba(201, 168, 76, 0.1);
+            border-right: 1px solid rgba(201, 168, 76, 0.1);
+            border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+        }
+
+        .edge-card:hover {
+            transform: translateX(5px);
+            background: rgba(26, 61, 34, 0.68);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        /* stagger even cards lower */
+        .edge-card:nth-child(even) { margin-top: 2rem; }
 
         .edge-card h4 {
-            margin-bottom: 0.5rem;
-            font-size: 1.08rem;
-            color: var(--navy);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.45rem;
         }
 
+        .edge-card p {
+            color: var(--color-text-muted);
+            font-size: 0.92rem;
+            line-height: 1.65;
+        }
+
+        /* ================================================================
+           RETURNS TABLE  (#returns — bg)
+           ================================================================ */
+        #returns { background: var(--color-bg); }
+
         .returns-table-wrap {
-            max-width: 900px;
+            max-width: 880px;
             margin: 0 auto;
             overflow-x: auto;
         }
@@ -332,205 +542,267 @@
             border-collapse: separate;
             border-spacing: 0;
             margin-top: 20px;
-            background: var(--white);
+            background: var(--color-surface);
             border-radius: 14px;
             overflow: hidden;
-            box-shadow: var(--card-shadow);
-            min-width: 520px;
+            box-shadow: 0 12px 44px rgba(0, 0, 0, 0.45);
+            min-width: 480px;
+            border: 1px solid rgba(201, 168, 76, 0.18);
         }
 
         .returns-table th,
         .returns-table td {
-            padding: 1rem;
+            padding: 1rem 1.3rem;
             text-align: left;
-            border-bottom: 1px solid #edf1f6;
+            border-bottom: 1px solid rgba(201, 168, 76, 0.07);
         }
 
         .returns-table th {
-            background: var(--navy);
-            color: var(--white);
+            background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light));
+            color: #0a1a0f;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.78rem;
             font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
         }
 
-        .returns-table tr:nth-child(even) td {
-            background: #f8fbff;
-        }
+        .returns-table td { color: var(--color-text); font-size: 0.97rem; }
 
-        .returns-table tr:last-child td {
-            border-bottom: none;
-        }
+        .returns-table tr:nth-child(even) td { background: rgba(31, 74, 40, 0.45); }
+
+        .returns-table tr:last-child td { border-bottom: none; }
+
+        .returns-table tbody tr { transition: background 0.2s ease; }
+
+        .returns-table tbody tr:hover td { background: rgba(201, 168, 76, 0.07); }
 
         .returns-note {
-            max-width: 840px;
+            max-width: 880px;
             margin: 1rem auto 0;
-            font-size: 0.87rem;
-            color: #66758a;
+            font-size: 0.84rem;
+            color: var(--color-text-muted);
             text-align: center;
+            font-style: italic;
+            opacity: 0.85;
         }
+
+        /* ================================================================
+           GOALS  (#goals — bg-mid)
+           ================================================================ */
+        #goals { background: var(--color-bg-mid); }
 
         .goals-list {
             list-style: none;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1rem;
-            max-width: 980px;
-            margin-left: auto;
-            margin-right: auto;
+            gap: 1.15rem;
+            max-width: 1000px;
+            margin: 0 auto;
         }
+
+        .goals-list li.glass-card { padding: 1.5rem; }
 
         .goals-list li span.icon {
-            margin-left: 0;
+            font-size: 1.4rem;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--color-surface), var(--color-surface-raised));
+            border: 1px solid rgba(201, 168, 76, 0.25);
+            border-radius: 50%;
+            margin-bottom: 1rem;
         }
 
-        .cta-section {
-            padding: 60px 0;
-            background: linear-gradient(135deg, var(--navy), #2f4f7c);
-            color: var(--white);
-            text-align: center;
+        .goals-list li p { color: var(--color-text-muted); font-size: 0.93rem; line-height: 1.7; }
+
+        .goals-list li p strong {
+            display: block;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1rem;
+            color: var(--color-text);
+            margin-bottom: 0.3rem;
         }
+
+        /* ================================================================
+           CTA SECTION  (surface bg)
+           ================================================================ */
+        .cta-section {
+            padding: 92px 0;
+            background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-raised) 55%, var(--color-bg-mid) 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 50%, rgba(201, 168, 76, 0.09) 0%, transparent 68%);
+            pointer-events: none;
+        }
+
+        .cta-section .container { position: relative; z-index: 1; }
 
         .cta-section h2 {
-            font-size: clamp(1.6rem, 3.4vw, 2.2rem);
-            margin-bottom: 0.65rem;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.7rem, 3.5vw, 2.5rem);
+            color: var(--color-text);
+            margin-bottom: 0.7rem;
+            letter-spacing: -0.02em;
         }
 
-        .cta-section p {
-            margin-bottom: 1.6rem;
-        }
+        .cta-section .sub { color: var(--color-text-muted); margin-bottom: 2rem; font-size: 1.05rem; }
 
+        /* ================================================================
+           FOOTER
+           ================================================================ */
         footer {
-            background: #122238;
-            color: #d9e3f0;
-            padding: 2.2rem 0;
+            background: var(--color-bg);
+            color: var(--color-text-muted);
+            padding: 3.5rem 0 1.75rem;
+            border-top: 1px solid rgba(201, 168, 76, 0.1);
         }
 
         .footer-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr;
-            gap: 1.2rem;
+            grid-template-columns: 1.3fr 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .footer-col h4 {
-            color: var(--white);
-            margin-bottom: 0.65rem;
+            font-family: 'Playfair Display', serif;
             font-size: 1rem;
+            color: var(--color-text);
+            margin-bottom: 0.85rem;
         }
 
-        .footer-col p,
-        .footer-col li,
+        .footer-col h4.brand {
+            font-size: 1.3rem;
+            color: var(--color-gold);
+        }
+
+        .footer-col p, .footer-col li {
+            font-size: 0.88rem;
+            color: var(--color-text-muted);
+            list-style: none;
+            line-height: 1.85;
+        }
+
+        .footer-col ul { list-style: none; display: grid; gap: 0.2rem; }
+
         .footer-col a {
-            font-size: 0.9rem;
-            color: #d9e3f0;
+            font-size: 0.88rem;
+            color: var(--color-text-muted);
             text-decoration: none;
-            list-style: none;
+            transition: color 0.25s ease;
         }
 
-        .footer-col ul {
-            display: grid;
-            gap: 0.3rem;
-            list-style: none;
-        }
+        .footer-col a:hover { color: var(--color-gold-light); }
 
         .social-links {
             display: flex;
-            gap: 0.75rem;
+            gap: 0.7rem;
             flex-wrap: wrap;
-            margin-top: 0.4rem;
+            margin-top: 0.5rem;
         }
 
         .social-links a {
-            border: 1px solid rgba(240, 165, 0, 0.6);
-            color: var(--gold-soft);
+            border: 1px solid rgba(201, 168, 76, 0.35);
+            color: var(--color-gold);
             border-radius: 999px;
-            padding: 0.32rem 0.7rem;
+            padding: 0.28rem 0.85rem;
+            font-size: 0.84rem;
+            transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
         }
 
         .social-links a:hover {
-            background: rgba(240, 165, 0, 0.15);
+            background: rgba(201, 168, 76, 0.12);
+            color: var(--color-gold-light);
+            border-color: var(--color-gold);
         }
 
         .footer-disclaimer {
-            margin-top: 1.1rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.12);
-            font-size: 0.8rem;
-            color: #c2cfde;
-            line-height: 1.6;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.79rem;
+            color: rgba(165, 201, 168, 0.5);
+            line-height: 1.75;
+            text-align: center;
         }
 
+        /* ================================================================
+           SCROLL REVEAL
+           ================================================================ */
         .reveal {
             opacity: 0;
-            transform: translateY(22px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
         }
 
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
 
+        /* ================================================================
+           RESPONSIVE
+           ================================================================ */
         @media (max-width: 900px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .edge-grid { grid-template-columns: 1fr; }
+            .edge-card:nth-child(even) { margin-top: 0; }
         }
 
         @media (max-width: 768px) {
-            .menu-toggle {
-                display: inline-flex;
-            }
+            .menu-toggle { display: inline-flex; }
 
             nav {
                 position: absolute;
                 top: 100%;
                 left: 0;
                 right: 0;
-                background: var(--navy);
-                border-top: 1px solid rgba(255, 255, 255, 0.12);
+                background: rgba(10, 26, 15, 0.97);
+                backdrop-filter: blur(16px);
+                border-top: 1px solid rgba(201, 168, 76, 0.15);
                 display: none;
-                padding: 0.75rem 1rem 1rem;
+                padding: 0.9rem 1.4rem 1.4rem;
             }
 
-            nav.open {
-                display: block;
-            }
+            nav.open { display: block; }
 
             nav ul {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 0.8rem;
+                gap: 0.9rem;
             }
 
-            .hero {
-                min-height: 92vh;
-            }
+            .hero { min-height: 95vh; }
 
-            .cta-group {
-                flex-direction: column;
-                align-items: stretch;
-            }
+            .hero-content { max-width: 100%; }
 
-            .cta-btn {
-                text-align: center;
-            }
+            .cta-group { flex-direction: column; align-items: flex-start; }
 
-            .returns-table {
-                min-width: 100%;
-            }
+            .cta-btn { text-align: center; width: 100%; max-width: 280px; }
 
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
+            .returns-table { min-width: 100%; }
+
+            .footer-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
+
+    <!-- ================================================================
+         HEADER / NAVBAR
+         ================================================================ -->
     <header>
         <div class="container header-inner">
-            <div class="logo">
+            <a href="#home" class="logo">
                 <img src="assets/images/logo.png" alt="Tankrich Logo">
-                <span>Tankrich MFD</span>
-            </div>
+                <span class="logo-text">Tank<span class="accent">rich</span> MFD</span>
+            </a>
             <button class="menu-toggle" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle navigation">☰</button>
             <nav id="main-nav">
                 <ul>
@@ -545,37 +817,98 @@
         </div>
     </header>
 
+    <!-- ================================================================
+         HERO  (#home)
+         ================================================================ -->
     <section id="home" class="hero">
-        <div class="hero-content reveal">
-            <h1>Invest with Confidence</h1>
-            <p>We are builders who love markets. Your trusted partner in data driven mutual fund investing.</p>
-            <div class="cta-group">
-                <a href="https://tidycal.com/tankrich/30-minute-meeting" target="_blank" rel="noopener" class="cta-btn">Book a Discovery Call</a>
-                <a href="info.html" class="cta-btn secondary">Learn About Onboarding</a>
+
+        <!-- Falling leaf particles -->
+        <div class="leaf-container" aria-hidden="true">
+            <span class="leaf">🍃</span>
+            <span class="leaf">🌿</span>
+            <span class="leaf">🍃</span>
+            <span class="leaf">🌿</span>
+            <span class="leaf">🍃</span>
+            <span class="leaf">🌿</span>
+            <span class="leaf">🍃</span>
+            <span class="leaf">🌿</span>
+        </div>
+
+        <div class="container">
+            <div class="hero-content">
+                <p class="hero-eyebrow">Mutual Funds For Life</p>
+                <h1>Grow Wealth<br><em>Like a Forest</em></h1>
+                <p class="hero-subtext">We are builders who love markets. Your trusted partner in data-driven mutual fund investing — quiet, compounding, and deeply rooted.</p>
+                <div class="cta-group">
+                    <a href="https://tidycal.com/tankrich/30-minute-meeting" target="_blank" rel="noopener" class="cta-btn">Book a Discovery Call</a>
+                    <a href="info.html" class="cta-btn secondary">Learn About Onboarding</a>
+                </div>
             </div>
         </div>
+
+        <!-- Forest canopy silhouette — back row (lighter) + front row (dark) -->
+        <svg class="forest-silhouette" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Back row: distant trees, semi-transparent -->
+            <path d="M0,220 L0,175
+                Q40,100 80,165 Q105,85 135,158 Q160,70 190,148 Q215,55 248,140
+                Q272,42 305,132 Q330,30 364,122 Q390,18 424,112
+                Q450,8  485,102 Q512,0  547,95  Q574,5  609,88
+                Q636,0  671,82  Q698,5  733,76  Q760,2  795,70
+                Q822,2  857,64  Q884,0  919,58  Q946,2  981,52
+                Q1008,0 1043,47 Q1070,2 1105,42 Q1132,0 1167,38
+                Q1194,2 1229,36 Q1256,2 1291,38 Q1318,6 1355,50
+                Q1382,20 1440,80
+                L1440,220 Z"
+                fill="rgba(17,43,23,0.7)"/>
+            <!-- Front row: closer trees, solid dark -->
+            <path d="M0,220 L0,195
+                Q28,155 55,190 Q72,162 92,186 Q110,155 132,182
+                Q150,152 172,178 Q192,148 215,174 Q234,145 258,170
+                Q278,142 303,167 Q322,138 348,163 Q368,135 394,159
+                Q414,132 440,156 Q460,129 487,153 Q508,127 535,150
+                Q555,124 582,147 Q603,122 630,144 Q650,120 677,142
+                Q698,118 725,140 Q746,117 773,138 Q793,115 820,136
+                Q841,114 868,134 Q888,112 915,132 Q936,111 963,130
+                Q983,110 1010,128 Q1030,108 1057,127 Q1078,107 1105,125
+                Q1125,106 1152,123 Q1173,105 1200,122 Q1221,105 1248,124
+                Q1268,106 1295,128 Q1315,110 1342,135
+                Q1362,118 1400,148 L1440,165
+                L1440,220 Z"
+                fill="#0a1a0f"/>
+        </svg>
     </section>
 
+    <!-- Wave: hero(bg) → about(bg-mid) -->
+    <div class="wave-divider" style="background:#0a1a0f">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1200,58 1340,24 1440,36 L1440,72 L0,72 Z" fill="#112b17"/>
+        </svg>
+    </div>
+
+    <!-- ================================================================
+         ABOUT / TEAM  (#about)
+         ================================================================ -->
     <section id="about" class="section reveal">
         <div class="container">
             <div class="section-title">
+                <span class="section-tag">Our Roots</span>
                 <h2>Meet Our Team</h2>
                 <p>Led by experienced professionals with deep market knowledge and proven track records.</p>
             </div>
             <div class="team-grid">
-                <div class="team-card">
+                <div class="team-card glass-card">
                     <h3>Founder, Investments</h3>
                     <p><strong>Leadership Team</strong><br><br>
                     • 15+ years of equity investing experience<br>
-                    • Recognized for disciplined small-cap research and long-term investing<br>
+                    • Recognised for disciplined small-cap research and long-term investing<br>
                     • Strong investor education and thought leadership presence<br>
                     • Advanced finance credentials and market expertise<br>
                     • Extensive track record of published market insights</p>
                 </div>
-                <div class="team-card">
+                <div class="team-card glass-card">
                     <h3>Founder, Operations</h3>
                     <p><strong>Leadership Team</strong><br><br>
-                    • Credit and debt market specialization<br>
+                    • Credit and debt market specialisation<br>
                     • A decade of banking and financial operations experience<br>
                     • Proven record in scaling investor-focused processes<br>
                     • Professional accounting and compliance background<br>
@@ -585,39 +918,50 @@
         </div>
     </section>
 
+    <!-- Wave: about(bg-mid) → why(bg) -->
+    <div class="wave-divider" style="background:#112b17">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,28 C240,68 480,0 720,38 C840,58 1000,8 1180,40 C1280,56 1380,22 1440,32 L1440,72 L0,72 Z" fill="#0a1a0f"/>
+        </svg>
+    </div>
+
+    <!-- ================================================================
+         WHY MUTUAL FUNDS  (#why)
+         ================================================================ -->
     <section id="why" class="section reveal">
         <div class="container">
             <div class="section-title">
+                <span class="section-tag">The Case for MFs</span>
                 <h2>Why Mutual Funds?</h2>
                 <p>The smart way to build wealth through professional management and diversification.</p>
             </div>
             <div class="features-grid">
-                <div class="feature">
+                <div class="feature glass-card">
                     <div class="icon">💰</div>
                     <h3>Tax-Efficient Structure</h3>
                     <p>Optimised tax treatment helps you keep more of your returns.</p>
                 </div>
-                <div class="feature">
+                <div class="feature glass-card">
                     <div class="icon">⚖️</div>
                     <h3>Balanced Approach</h3>
                     <p>Strike the right balance between time and return for optimal growth.</p>
                 </div>
-                <div class="feature">
+                <div class="feature glass-card">
                     <div class="icon">💧</div>
                     <h3>High Liquidity</h3>
                     <p>Access your investments whenever you need them.</p>
                 </div>
-                <div class="feature">
+                <div class="feature glass-card">
                     <div class="icon">🛡️</div>
-                    <h3>Regulation & Transparency</h3>
+                    <h3>Regulation &amp; Transparency</h3>
                     <p>SEBI-regulated funds offer transparency and investor protection.</p>
                 </div>
-                <div class="feature">
+                <div class="feature glass-card">
                     <div class="icon">🎯</div>
                     <h3>Wide Choice of Schemes</h3>
                     <p>Choose from a wide array of schemes suited to your goals.</p>
                 </div>
-                <div class="feature">
+                <div class="feature glass-card">
                     <div class="icon">🧭</div>
                     <h3>Expert Guidance</h3>
                     <p>Navigate the investment landscape with seasoned professionals.</p>
@@ -626,15 +970,26 @@
         </div>
     </section>
 
+    <!-- Wave: why(bg) → edge(bg-mid) -->
+    <div class="wave-divider" style="background:#0a1a0f">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,48 C120,8 280,68 440,30 C620,-4 800,64 980,28 C1120,2 1280,60 1440,24 L1440,72 L0,72 Z" fill="#112b17"/>
+        </svg>
+    </div>
+
+    <!-- ================================================================
+         OUR EDGE  (#edge)
+         ================================================================ -->
     <section id="edge" class="section reveal">
         <div class="container">
             <div class="section-title">
+                <span class="section-tag">What Sets Us Apart</span>
                 <h2>Our Edge</h2>
-                <p>What sets us apart in the mutual fund landscape.</p>
+                <p>What differentiates us in the mutual fund landscape.</p>
             </div>
             <div class="edge-grid">
                 <div class="edge-card">
-                    <h4>🔍 Macro & Micro Trend Detection</h4>
+                    <h4>🔍 Macro &amp; Micro Trend Detection</h4>
                     <p>We spot emerging trends and reversals to time your investments better.</p>
                 </div>
                 <div class="edge-card">
@@ -661,9 +1016,20 @@
         </div>
     </section>
 
+    <!-- Wave: edge(bg-mid) → returns(bg) -->
+    <div class="wave-divider" style="background:#112b17">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,18 C160,62 340,0 520,42 C700,78 860,4 1060,46 C1180,68 1320,20 1440,44 L1440,72 L0,72 Z" fill="#0a1a0f"/>
+        </svg>
+    </div>
+
+    <!-- ================================================================
+         RETURNS TABLE  (#returns)
+         ================================================================ -->
     <section id="returns" class="section reveal">
         <div class="container">
             <div class="section-title">
+                <span class="section-tag">Performance Context</span>
                 <h2>Returns Expectations</h2>
                 <p>Historically observed median CAGR ranges across different fund categories.</p>
             </div>
@@ -678,19 +1044,19 @@
                     <tbody>
                         <tr>
                             <td>Debt Funds (Low risk)</td>
-                            <td>5 - 7%</td>
+                            <td>5 – 7%</td>
                         </tr>
                         <tr>
                             <td>Hybrid/Balanced Funds</td>
-                            <td>8 - 10%</td>
+                            <td>8 – 10%</td>
                         </tr>
                         <tr>
                             <td>Equity Large/Multi-cap</td>
-                            <td>10 - 12%</td>
+                            <td>10 – 12%</td>
                         </tr>
                         <tr>
                             <td>Equity Mid/Small-cap</td>
-                            <td>12 - 15%</td>
+                            <td>12 – 15%</td>
                         </tr>
                     </tbody>
                 </table>
@@ -699,50 +1065,81 @@
         </div>
     </section>
 
+    <!-- Wave: returns(bg) → goals(bg-mid) -->
+    <div class="wave-divider" style="background:#0a1a0f">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,54 C200,12 400,70 600,34 C780,2  960,66 1140,30 C1260,8 1380,58 1440,38 L1440,72 L0,72 Z" fill="#112b17"/>
+        </svg>
+    </div>
+
+    <!-- ================================================================
+         GOALS  (#goals)
+         ================================================================ -->
     <section id="goals" class="section reveal">
         <div class="container">
             <div class="section-title">
+                <span class="section-tag">Your Journey</span>
                 <h2>Goal-Driven Investing</h2>
                 <p>Follow a structured process to achieve your financial milestones.</p>
             </div>
             <ul class="goals-list">
-                <li>
+                <li class="glass-card">
                     <span class="icon">🎯</span>
-                    <p><strong>Define your goal & risk appetite</strong><br>Identify the time horizon and returns you need to meet your objectives.</p>
+                    <p><strong>Define your goal &amp; risk appetite</strong>Identify the time horizon and returns you need to meet your objectives.</p>
                 </li>
-                <li>
+                <li class="glass-card">
                     <span class="icon">🗃️</span>
-                    <p><strong>Choose fund categories</strong><br>Allocate across debt, hybrid and equity funds based on risk/return balance.</p>
+                    <p><strong>Choose fund categories</strong>Allocate across debt, hybrid and equity funds based on risk/return balance.</p>
                 </li>
-                <li>
+                <li class="glass-card">
                     <span class="icon">🔍</span>
-                    <p><strong>Select specific schemes</strong><br>Use our data-driven tools to pick the best-fit schemes in each category.</p>
+                    <p><strong>Select specific schemes</strong>Use our data-driven tools to pick the best-fit schemes in each category.</p>
                 </li>
-                <li>
+                <li class="glass-card">
                     <span class="icon">📡</span>
-                    <p><strong>Monitor & adjust</strong><br>Stay on course with Tankrich Nudges and periodic portfolio reviews.</p>
+                    <p><strong>Monitor &amp; adjust</strong>Stay on course with Tankrich Nudges and periodic portfolio reviews.</p>
                 </li>
             </ul>
         </div>
     </section>
 
+    <!-- Wave: goals(bg-mid) → cta(surface) -->
+    <div class="wave-divider" style="background:#112b17">
+        <svg viewBox="0 0 1440 72" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,30 C240,72 480,0 720,42 C880,68 1060,8 1260,48 C1340,64 1400,30 1440,20 L1440,72 L0,72 Z" fill="#1a3d22"/>
+        </svg>
+    </div>
+
+    <!-- ================================================================
+         CTA SECTION
+         ================================================================ -->
     <section class="cta-section reveal">
         <div class="container">
             <h2>Ready to Start Investing?</h2>
-            <p>Book a discovery call or explore our onboarding guide to get started.</p>
-            <div class="cta-group">
+            <p class="sub">Book a discovery call or explore our onboarding guide to get started.</p>
+            <div class="cta-group" style="justify-content:center">
                 <a href="https://tidycal.com/tankrich/30-minute-meeting" target="_blank" rel="noopener" class="cta-btn">Book a Discovery Call</a>
                 <a href="info.html" class="cta-btn secondary">Understand Onboarding</a>
             </div>
         </div>
     </section>
 
+    <!-- Wave: cta(surface) → footer(bg) -->
+    <div class="wave-divider" style="background:#1a3d22">
+        <svg viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,24 C180,56 360,0 540,28 C720,56 900,4 1080,32 C1200,50 1340,16 1440,28 L1440,60 L0,60 Z" fill="#0a1a0f"/>
+        </svg>
+    </div>
+
+    <!-- ================================================================
+         FOOTER
+         ================================================================ -->
     <footer>
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <h4>Tankrich MFD</h4>
-                    <p>Mutual Funds For Life with goal-based guidance, transparent execution, and disciplined reviews.</p>
+                    <h4 class="brand">Tankrich MFD</h4>
+                    <p>Mutual Funds For Life — goal-based guidance, transparent execution, and disciplined reviews.</p>
                 </div>
                 <div class="footer-col">
                     <h4>Quick Links</h4>
@@ -764,9 +1161,13 @@
         </div>
     </footer>
 
+    <!-- ================================================================
+         JAVASCRIPT — navbar toggle, hide-on-scroll, IntersectionObserver
+         ================================================================ -->
     <script>
+        /* --- Mobile menu toggle --- */
         const toggleBtn = document.querySelector('.menu-toggle');
-        const nav = document.querySelector('nav');
+        const nav       = document.querySelector('nav');
 
         if (toggleBtn && nav) {
             toggleBtn.addEventListener('click', () => {
@@ -775,42 +1176,46 @@
             });
         }
 
-        document.querySelectorAll('nav a[href^="#"], .footer-col a[href^="#"]').forEach((anchor) => {
+        /* --- Smooth-scroll + close mobile menu on anchor click --- */
+        document.querySelectorAll('nav a[href^="#"], .footer-col a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                const targetId = this.getAttribute('href');
-                if (targetId && targetId.startsWith('#')) {
+                const id = this.getAttribute('href');
+                if (id && id.startsWith('#')) {
                     e.preventDefault();
-                    const targetEl = document.querySelector(targetId);
-                    if (targetEl) {
-                        targetEl.scrollIntoView({ behavior: 'smooth' });
-                    }
+                    const target = document.querySelector(id);
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
                     nav.classList.remove('open');
-                    toggleBtn.setAttribute('aria-expanded', 'false');
+                    if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
                 }
             });
         });
 
+        /* --- Hide header on scroll-down, show on scroll-up --- */
         let lastScrollTop = 0;
         window.addEventListener('scroll', () => {
             const header = document.querySelector('header');
-            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            const current = window.pageYOffset || document.documentElement.scrollTop;
             if (window.innerWidth > 768) {
-                header.style.transform = (currentScroll > lastScrollTop && currentScroll > 100) ? 'translateY(-100%)' : 'translateY(0)';
+                header.style.transform = (current > lastScrollTop && current > 100)
+                    ? 'translateY(-100%)'
+                    : 'translateY(0)';
             }
-            lastScrollTop = currentScroll;
-        });
+            lastScrollTop = current;
+        }, { passive: true });
 
-        const revealItems = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
+        /* --- IntersectionObserver: scroll-triggered fade-in for .reveal elements --- */
+        const revealEls = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
+                    revealObserver.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.15 });
+        }, { threshold: 0.12 });
 
-        revealItems.forEach((el) => observer.observe(el));
+        revealEls.forEach(el => revealObserver.observe(el));
     </script>
+
 </body>
 </html>
